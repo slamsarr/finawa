@@ -1,0 +1,47 @@
+//Core files
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+
+@import "config/variables";
+@import "config/variables-dark";
+
+@import "../../../node_modules/bootstrap/scss/mixins";
+// @import "../../../node_modules/bootstrap/scss/bootstrap";
+
+@import "components/alerts";
+@import "components/breadcrumb";
+@import "components/buttons";
+@import "components/cards";
+@import "components/dropdowns";
+@import "components/forms";
+@import "components/modals";
+@import "components/pages";
+@import "components/progress";
+@import "components/root";
+@import "components/spinner";
+@import "components/tables";
+@import "components/tab-tooltip";
+@import "components/utilities";
+@import "components/contrast-fixes";
+
+@import "structure/startbar";
+@import "structure/topbar";
+@import "structure/footer";
+
+@import "pages/chat";
+@import "pages/kanban";
+@import "pages/pricing";
+@import "pages/print";
+@import "pages/rating";
+@import "pages/ribbons";
+@import "pages/timeline";
+
+
+@import "plugins/calendar";
+@import "plugins/custom-scrollbar";
+@import "plugins/charts";
+@import "plugins/maps";
+@import "plugins/prismjs";
+@import "plugins/sweet-alert";
+@import "plugins/ui-slider";
+@import "plugins/tree";

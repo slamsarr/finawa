@@ -1,0 +1,340 @@
+<div class="container-fluid">
+  <div class="row mb-3 align-items-center app-page-head">
+    <div class="col">
+      <span class="finawa-eyebrow">Espace entreprise</span>
+      <h4 class="page-title mb-1">Mon profil entreprise</h4>
+      <p class="text-muted mb-0 small">Mettez à jour vos informations légales, financières et votre compte.</p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- Card resume gauche -->
+    <div class="col-xl-4 col-lg-5">
+      <div class="card">
+        <div class="card-body text-center">
+          <app-avatar [name]="enterprise?.name || userLogin || 'Entreprise'" persona="ENTERPRISE" [size]="96" />
+          <h4 class="mt-3 mb-1">{{ enterprise?.name || 'Entreprise' }}</h4>
+          <p class="text-muted mb-2">
+            {{ enterprise?.type?.name || 'Type non défini' }} — {{ enterprise?.sector?.name || 'Secteur non défini' }}
+          </p>
+          <app-persona-badge persona="ENTERPRISE" />
+
+          <hr class="my-3" />
+
+          <div class="text-start">
+            <div class="d-flex justify-content-between py-2 border-bottom">
+              <span class="text-muted"><i class="las la-envelope me-1"></i>Email compte :</span>
+              <strong>{{ userLogin || '—' }}</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+              <span class="text-muted"><i class="las la-users me-1"></i>Nombre d'employés :</span>
+              <strong>{{ enterprise?.employeeCount || 0 }}</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+              <span class="text-muted"><i class="las la-coins me-1"></i>Chiffre d'affaires :</span>
+              <strong>{{ (enterprise?.annualTurnover | number) || 0 }} FCFA</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+              <span class="text-muted"><i class="las la-map-marker me-1"></i>Région :</span>
+              <strong>{{ enterprise?.region || '—' }}</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2">
+              <span class="text-muted"><i class="las la-calendar me-1"></i>Créée le :</span>
+              <strong>{{ (enterprise?.creationDate | date: 'dd/MM/yyyy') || '—' }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaire d'edition droite -->
+    <div class="col-xl-8 col-lg-7">
+      <div class="card">
+        <div class="card-header border-bottom">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link"
+                [class.active]="activeTab === 'enterprise'"
+                (click)="activeTab = 'enterprise'"
+              >
+                <i class="las la-building me-1"></i>Informations Entreprise
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                type="button"
+                class="nav-link"
+                [class.active]="activeTab === 'account'"
+                (click)="activeTab = 'account'"
+              >
+                <i class="las la-user me-1"></i>Compte Utilisateur
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+          @if (loading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+              <p class="mt-2 text-muted">Chargement du profil entreprise...</p>
+            </div>
+          } @else if (errorMsg) {
+            <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+              <i class="las la-exclamation-circle me-2 fs-4"></i>
+              <div>{{ errorMsg }}</div>
+              <button type="button" class="btn btn-outline-danger btn-sm ms-auto" (click)="loadData()">Réessayer</button>
+            </div>
+          } @else if (activeTab === 'enterprise') {
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <h5 class="mb-3 text-primary"><i class="las la-info-circle me-1"></i>Informations Générales</h5>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Nom de l'entreprise <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Ex: Teranga Agro SARL"
+                    [class.is-invalid]="form.get('name')?.touched && form.get('name')?.invalid"
+                  />
+                  @if (form.get('name')?.touched && form.get('name')?.invalid) {
+                    <div class="invalid-feedback">Le nom de l'entreprise est obligatoire.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Région d'exploitation <span class="text-danger">*</span></label>
+                  <select
+                    class="form-select"
+                    formControlName="region"
+                    [class.is-invalid]="form.get('region')?.touched && form.get('region')?.invalid"
+                  >
+                    <option value="" disabled>-- Sélectionner une région --</option>
+                    @for (r of regions; track r) {
+                      <option [value]="r">{{ r }}</option>
+                    }
+                  </select>
+                  @if (form.get('region')?.touched && form.get('region')?.invalid) {
+                    <div class="invalid-feedback">La région est obligatoire.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Type d'entreprise <span class="text-danger">*</span></label>
+                  <select
+                    class="form-select"
+                    formControlName="typeId"
+                    [class.is-invalid]="form.get('typeId')?.touched && form.get('typeId')?.invalid"
+                  >
+                    <option [ngValue]="null" disabled>-- Sélectionner un type --</option>
+                    @for (t of enterpriseTypes; track t.id) {
+                      <option [ngValue]="t.id">{{ t.name }}</option>
+                    }
+                  </select>
+                  @if (form.get('typeId')?.touched && form.get('typeId')?.invalid) {
+                    <div class="invalid-feedback">Veuillez sélectionner un type d'entreprise.</div>
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Secteur d'activité <span class="text-danger">*</span></label>
+                  <select
+                    class="form-select"
+                    formControlName="sectorId"
+                    [class.is-invalid]="form.get('sectorId')?.touched && form.get('sectorId')?.invalid"
+                  >
+                    <option [ngValue]="null" disabled>-- Sélectionner un secteur --</option>
+                    @for (s of enterpriseSectors; track s.id) {
+                      <option [ngValue]="s.id">{{ s.name }}</option>
+                    }
+                  </select>
+                  @if (form.get('sectorId')?.touched && form.get('sectorId')?.invalid) {
+                    <div class="invalid-feedback">Veuillez sélectionner un secteur d'activité.</div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Nombre d'employés (1 - 500) <span class="text-danger">*</span></label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="employeeCount"
+                    [class.is-invalid]="form.get('employeeCount')?.touched && form.get('employeeCount')?.invalid"
+                  />
+                  @if (form.get('employeeCount')?.touched && form.get('employeeCount')?.invalid) {
+                    <div class="invalid-feedback">Entre 1 et 500 employés requis.</div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Chiffre d'affaires annuel (FCFA) <span class="text-danger">*</span></label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="annualTurnover"
+                    [class.is-invalid]="form.get('annualTurnover')?.touched && form.get('annualTurnover')?.invalid"
+                  />
+                  @if (form.get('annualTurnover')?.touched && form.get('annualTurnover')?.invalid) {
+                    <div class="invalid-feedback">Chiffre d'affaires >= 0 requis.</div>
+                  }
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Date de création <span class="text-danger">*</span></label>
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    formControlName="creationDate"
+                    [class.is-invalid]="form.get('creationDate')?.touched && form.get('creationDate')?.invalid"
+                  />
+                  @if (form.get('creationDate')?.touched && form.get('creationDate')?.invalid) {
+                    <div class="invalid-feedback">La date de création est requise.</div>
+                  }
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Résumé / Description</label>
+                  <textarea
+                    rows="3"
+                    class="form-control"
+                    formControlName="summary"
+                    placeholder="Synthèse des activités de l'entreprise..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="form-action-bar">
+                <button type="button" class="btn btn-outline-secondary" (click)="loadData()">
+                  <i class="las la-undo me-1"></i>Annuler
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="saving || form.invalid">
+                  @if (saving) {
+                    <span class="spinner-border spinner-border-sm me-1"></span>Enregistrement...
+                  } @else {
+                    <i class="las la-save me-1"></i>Enregistrer les modifications
+                  }
+                </button>
+              </div>
+            </form>
+          } @else if (activeTab === 'account') {
+            <h5 class="mb-3 text-primary"><i class="las la-user-circle me-1"></i>Informations du Compte</h5>
+            <div class="row g-3 mb-4 pb-3 border-bottom">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Identifiant (Email)</label>
+                <input class="form-control" [value]="userLogin" readonly />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Profil d'accès</label>
+                <input class="form-control" value="ENTERPRISE" readonly />
+              </div>
+            </div>
+
+            <h5 class="mb-3 text-primary"><i class="las la-key me-1"></i>Changer de mot de passe</h5>
+            <p class="text-muted small mb-4">
+              Pour des raisons de sécurité, nous vous recommandons d'utiliser un mot de passe robuste comportant au moins 8 caractères.
+            </p>
+
+            <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()" class="row g-3">
+              <!-- Ancien mot de passe -->
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Mot de passe actuel <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="las la-lock"></i></span>
+                  <input
+                    [type]="showOldPassword ? 'text' : 'password'"
+                    class="form-control"
+                    placeholder="Votre mot de passe actuel"
+                    formControlName="oldPassword"
+                    [class.is-invalid]="passwordForm.get('oldPassword')?.touched && passwordForm.get('oldPassword')?.invalid"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="showOldPassword = !showOldPassword"
+                  >
+                    <i [class]="showOldPassword ? 'las la-eye-slash' : 'las la-eye'"></i>
+                  </button>
+                </div>
+                @if (passwordForm.get('oldPassword')?.touched && passwordForm.get('oldPassword')?.invalid) {
+                  <div class="invalid-feedback d-block">Le mot de passe actuel est requis.</div>
+                }
+              </div>
+
+              <!-- Nouveau mot de passe -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Nouveau mot de passe <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="las la-shield-alt"></i></span>
+                  <input
+                    [type]="showNewPassword ? 'text' : 'password'"
+                    class="form-control"
+                    placeholder="Au moins 8 caractères"
+                    formControlName="newPassword"
+                    [class.is-invalid]="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="showNewPassword = !showNewPassword"
+                  >
+                    <i [class]="showNewPassword ? 'las la-eye-slash' : 'las la-eye'"></i>
+                  </button>
+                </div>
+                @if (passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid) {
+                  <div class="invalid-feedback d-block">Le nouveau mot de passe doit comporter au moins 8 caractères.</div>
+                }
+              </div>
+
+              <!-- Confirmation mot de passe -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Confirmer le mot de passe <span class="text-danger">*</span></label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="las la-check-double"></i></span>
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    class="form-control"
+                    placeholder="Retapez le nouveau mot de passe"
+                    formControlName="confirmPassword"
+                    [class.is-invalid]="(passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.invalid) || (passwordForm.get('confirmPassword')?.touched && passwordForm.errors?.['passwordMismatch'])"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="showConfirmPassword = !showConfirmPassword"
+                  >
+                    <i [class]="showConfirmPassword ? 'las la-eye-slash' : 'las la-eye'"></i>
+                  </button>
+                </div>
+                @if (passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.errors?.['required']) {
+                  <div class="invalid-feedback d-block">La confirmation est obligatoire.</div>
+                } @else if (passwordForm.get('confirmPassword')?.touched && passwordForm.errors?.['passwordMismatch']) {
+                  <div class="invalid-feedback d-block">Les deux mots de passe ne correspondent pas.</div>
+                }
+              </div>
+
+              <div class="col-12 mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="savingPassword || passwordForm.invalid"
+                >
+                  @if (savingPassword) {
+                    <span class="spinner-border spinner-border-sm me-1"></span>Modification en cours...
+                  } @else {
+                    <i class="las la-save me-1"></i>Mettre à jour le mot de passe
+                  }
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

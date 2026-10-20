@@ -1,0 +1,219 @@
+<div class="auth-page-wrapper">
+  <div class="auth-atmosphere" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="mesh"></span>
+  </div>
+
+  <!-- Floating Theme Switcher -->
+  <button
+    type="button"
+    class="theme-floating-btn"
+    (click)="toggleTheme()"
+    [title]="(themeService.theme$ | async) === 'dark' ? 'Mode Clair' : 'Mode Sombre'"
+    aria-label="Changer de thème"
+  >
+    <i [class]="(themeService.theme$ | async) === 'dark' ? 'fas fa-sun text-warning' : 'fas fa-moon'"></i>
+  </button>
+
+  <div class="auth-card-container">
+    
+    <!-- LEFT PANEL: Brand & Value Proposition -->
+    <div class="auth-showcase-panel">
+      <div class="showcase-content">
+        <a routerLink="/" class="showcase-brand mb-4 d-inline-block">
+          <img src="assets/images/logo.png" alt="FINAWA" class="showcase-logo" />
+          <strong class="showcase-wordmark">FINAWA<span>.</span></strong>
+        </a>
+
+        <span class="showcase-eyebrow">Espace sécurisé</span>
+
+        <h1 class="showcase-title">
+          Reprenez votre parcours de <span class="text-gradient-crimson">préparation au financement</span>
+        </h1>
+
+        <p class="showcase-subtitle">
+          Retrouvez votre profil entreprise, vos documents, vos demandes et les recommandations de partenaires adaptées à votre besoin.
+        </p>
+
+        <div class="showcase-features-list mt-4">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="feature-text">
+              <strong>Diagnostic &amp; Scoring Financier</strong>
+              <span>Évaluez la maturité financière de vos dossiers</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="feature-text">
+              <strong>Réseau Bancaire &amp; Investisseurs</strong>
+              <span>Transmission ciblée sans démarche superflue</span>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fas fa-lock"></i></div>
+            <div class="feature-text">
+              <strong>Sécurité &amp; Confidentialité</strong>
+              <span>Protection de vos données et conformité bancaire</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-footer mt-5 pt-3 border-top border-white-10 text-xs text-slate-400">
+          <span>FINAWA Platform &copy; 2026 &bull; Propulsé par Kapit Group</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Login Form -->
+    <div class="auth-form-panel">
+      <div class="form-panel-header">
+        <div class="d-sm-none text-center mb-4">
+          <a routerLink="/" class="mobile-brand">
+            <img src="assets/images/logo.png" alt="FINAWA" height="40" />
+            <strong>FINAWA<span>.</span></strong>
+          </a>
+        </div>
+        <span class="form-eyebrow">Espace membre</span>
+        <h2 class="form-title">Accéder à votre espace FINAWA</h2>
+        <p class="form-subtitle">Connectez-vous pour suivre votre dossier, vos documents et vos mises en relation.</p>
+      </div>
+
+      <!-- Error Alert Message -->
+      @if (error$ | async; as error) {
+        <div class="auth-alert-error mb-4 animate__animated animate__shakeX">
+          <div class="d-flex align-items-start gap-2">
+            <i class="fas fa-exclamation-circle text-danger mt-1 fs-5"></i>
+            <div>
+              <strong class="d-block text-danger font-semibold">Échec de connexion</strong>
+              <span class="text-xs text-danger-emphasis">{{ error }}</span>
+              @if (error.toLowerCase().includes('activ') || error.toLowerCase().includes('confirm') || error.toLowerCase().includes('disabled')) {
+                <div class="mt-2">
+                  <a routerLink="/auth/verify-email" class="text-crimson text-decoration-underline text-xs fw-bold">
+                    <i class="fas fa-envelope me-1"></i>Renvoyer l'email de confirmation
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <form [formGroup]="signInForm" (ngSubmit)="onLogin()" class="auth-form mt-2">
+        
+        <!-- Identifiant Input -->
+        <div class="form-group mb-3">
+          <label class="form-label fw-bold text-xs text-uppercase tracking-wider">Identifiant / Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              class="form-control-custom"
+              placeholder="Votre identifiant ou email"
+              formControlName="login"
+              [class.is-invalid]="submitted && formValues['login'].errors"
+              autocomplete="username"
+            />
+          </div>
+          @if (submitted && formValues['login'].errors) {
+            <div class="field-error-msg">
+              <i class="fas fa-exclamation-circle me-1"></i>L'identifiant est requis
+            </div>
+          }
+        </div>
+
+        <!-- Mot de passe Input -->
+        <div class="form-group mb-3">
+          <label class="form-label fw-bold text-xs text-uppercase tracking-wider" for="password">Mot de passe</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              #passwordInput
+              type="password"
+              id="password"
+              class="form-control-custom pe-5"
+              placeholder="Votre mot de passe"
+              formControlName="password"
+              [class.is-invalid]="submitted && formValues['password'].errors"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="password-toggle-btn"
+              (click)="togglePassword(passwordInput)"
+              [attr.aria-label]="getIcon(passwordInput).on ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            >
+              <i [class]="getIcon(passwordInput).on ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+            </button>
+          </div>
+          @if (submitted && formValues['password'].errors) {
+            <div class="field-error-msg">
+              <i class="fas fa-exclamation-circle me-1"></i>Le mot de passe est requis
+            </div>
+          }
+        </div>
+
+        <!-- Se souvenir & Mot de passe oublié -->
+        <div class="d-flex align-items-center justify-content-between my-3 text-xs">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="rememberMe" id="rememberMe" />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">Se souvenir de moi</span>
+          </label>
+          <a routerLink="/auth/reset-pass" class="forgot-password-link">
+            Mot de passe oublié ?
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-4">
+          @if (!(loading$ | async)) {
+            <button type="submit" class="btn-auth-primary w-100">
+              <span>Se connecter</span>
+              <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          } @else {
+            <button type="button" class="btn-auth-primary w-100" disabled>
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span>Connexion en cours...</span>
+            </button>
+          }
+        </div>
+
+      </form>
+
+      <div class="demo-access mt-4">
+        <p class="demo-access-label">Accès direct par profil (1 clic)</p>
+        <div class="demo-access-grid">
+          @for (role of demoRoles; track role.profile) {
+            <button type="button" class="demo-chip" (click)="enterDemo(role)" [title]="'Connexion directe : ' + role.label">
+              <div class="d-flex align-items-center justify-content-between w-100">
+                <strong>{{ role.label }}</strong>
+                <span class="badge bg-light text-muted border text-2xs px-1" (click)="fillForm(role, $event)" title="Pré-remplir le formulaire">
+                  <i class="fas fa-pen fs-10"></i>
+                </span>
+              </div>
+              <span>{{ role.hint }}</span>
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Bottom Switch to Register -->
+      <div class="form-panel-footer text-center mt-4 pt-3 border-top">
+        <p class="text-sm text-slate-500 mb-0">
+          Vous n'avez pas encore de compte ?
+          <a routerLink="/auth/register" class="text-crimson fw-bold text-decoration-none ms-1">
+            Créer un compte entreprise
+          </a>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

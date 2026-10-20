@@ -1,0 +1,183 @@
+=== WORKBOOK OVERVIEW ===
+Number of sheets: 16
+Sheet 0: 'Landing Page' (hidden: false, veryHidden: false)
+Sheet 1: 'Sommaire' (hidden: false, veryHidden: false)
+Sheet 2: 'Checklist' (hidden: false, veryHidden: false)
+Sheet 3: 'Hypotheses' (hidden: false, veryHidden: false)
+Sheet 4: 'Estimation des autres charges' (hidden: false, veryHidden: false)
+Sheet 5: 'OPEX' (hidden: false, veryHidden: false)
+Sheet 6: 'Amort_Immobilisation' (hidden: false, veryHidden: false)
+Sheet 7: 'TA _Invest' (hidden: false, veryHidden: false)
+Sheet 8: 'TA _Exploitation' (hidden: false, veryHidden: false)
+Sheet 9: 'Feuil1' (hidden: false, veryHidden: false)
+Sheet 10: 'CEP' (hidden: false, veryHidden: false)
+Sheet 11: 'Plan tréso' (hidden: false, veryHidden: false)
+Sheet 12: 'Cashflow' (hidden: false, veryHidden: false)
+Sheet 13: 'Données_Graph' (hidden: true, veryHidden: false)
+Sheet 14: 'GRAPH' (hidden: false, veryHidden: false)
+Sheet 15: 'Equilibre' (hidden: false, veryHidden: false)
+
+=== NAMED RANGES ===
+Name: Amort_Bat -> Hypotheses!$F$33 (sheet: Hypotheses)
+Name: Amort_Equipement -> Hypotheses!$F$35 (sheet: Hypotheses)
+Name: Amort_Installation -> Hypotheses!$F$37 (sheet: Hypotheses)
+Name: Amort_MMB -> Hypotheses!$F$34 (sheet: Hypotheses)
+Name: Amort_Vehicule -> Hypotheses!$F$36 (sheet: Hypotheses)
+Name: ChoixVerC -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Cot_sociales -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: CountryList -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Cout_Projet -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: CurrToggle -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: DaysPayable -> Cashflow!$F$17 (sheet: Cashflow)
+Name: DaysReceivable -> Cashflow!$F$16 (sheet: Cashflow)
+Name: Delais_clients -> Hypotheses!$F$28 (sheet: Hypotheses)
+Name: Delais_Frs -> Hypotheses!$F$29 (sheet: Hypotheses)
+Name: Delais_Stocks -> Hypotheses!$F$30 (sheet: Hypotheses)
+Name: Inflation -> Hypotheses!$F$24 (sheet: Hypotheses)
+Name: InventoryTurnover -> Cashflow!$F$18 (sheet: Cashflow)
+Name: jours_an -> Hypotheses!$F$25 (sheet: Hypotheses)
+Name: Prix1 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Prix2 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Prix3 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Taux_interet -> Hypotheses!$F$23 (sheet: Hypotheses)
+Name: Taux_IS -> Hypotheses!$F$22 (sheet: Hypotheses)
+Name: Volume1 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Volume2 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+Name: Volume3 -> #REF! (error getting sheet: Cell reference invalid: #REF!)
+
+=== CROSS-SHEET REFERENCES TO Landing Page OR Sommaire ===
+==================================================
+FULL SHEET INSPECTION: Landing Page (LastRowNum=22)
+==================================================
+Row  1 Col  2 [C2   ] type=STRING  val='LANDING PAGE' formula='' [Merged C2:L2] (TOP-LEFT)
+Row  4 Col  2 [C5   ] type=STRING  val='Données générales' formula='' [Merged C5:F5] (TOP-LEFT)
+Row  4 Col  7 [H5   ] type=STRING  val='Contacts' formula='' [Merged H5:L5] (TOP-LEFT)
+Row  6 Col  2 [C7   ] type=STRING  val='Nom de la structure' formula='' [Merged C7:D7] (TOP-LEFT)
+Row  6 Col  4 [E7   ] type=STRING  val='DEMARCH' formula='' [Merged E7:F7] (TOP-LEFT)
+Row  6 Col  8 [I7   ] type=STRING  val='Dirigeant' formula='' [Merged I7:J7] (TOP-LEFT)
+Row  8 Col  2 [C9   ] type=STRING  val='Secteur d'activités' formula='' [Merged C9:D9] (TOP-LEFT)
+Row  8 Col  4 [E9   ] type=BLANK   val='' formula='' [Merged E9:F9] (TOP-LEFT)
+Row  8 Col  8 [I9   ] type=STRING  val='Téléphone' formula='' [Merged I9:J9] (TOP-LEFT)
+Row 10 Col  2 [C11  ] type=STRING  val='Chiffres d'affaires estimé' formula='' [Merged C11:D11] (TOP-LEFT)
+Row 10 Col  4 [E11  ] type=BLANK   val='' formula='' [Merged E11:F11] (TOP-LEFT)
+Row 10 Col  8 [I11  ] type=STRING  val='Email' formula='' [Merged I11:J11] (TOP-LEFT)
+Row 12 Col  2 [C13  ] type=STRING  val='Montant souhaité' formula='' [Merged C13:D13] (TOP-LEFT)
+Row 12 Col  4 [E13  ] type=BLANK   val='' formula='' [Merged E13:F13] (TOP-LEFT)
+Row 12 Col  8 [I13  ] type=STRING  val='Préférence d'appel' formula='' [Merged I13:J13] (TOP-LEFT)
+Row 14 Col  2 [C15  ] type=STRING  val='Montant précis' formula='' [Merged C15:D15] (TOP-LEFT)
+Row 14 Col  4 [E15  ] type=BLANK   val='' formula='' [Merged E15:F15] (TOP-LEFT)
+Row 14 Col  8 [I15  ] type=STRING  val='Urgence' formula='' [Merged I15:J15] (TOP-LEFT)
+Row 16 Col  2 [C17  ] type=STRING  val='Nature du besoin' formula='' [Merged C17:D17] (TOP-LEFT)
+Row 16 Col  8 [I17  ] type=STRING  val='Source d'informations' formula='' [Merged I17:J17] (TOP-LEFT)
+Row 18 Col  2 [C19  ] type=STRING  val='Anciennété' formula='' [Merged C19:D19] (TOP-LEFT)
+Row 20 Col  2 [C21  ] type=STRING  val='Employés' formula='' [Merged C21:D21] (TOP-LEFT)
+Row 22 Col  2 [C23  ] type=STRING  val='Ville / Zone' formula='' [Merged C23:D23] (TOP-LEFT)
+
+==================================================
+FULL SHEET INSPECTION: Sommaire (LastRowNum=1007)
+==================================================
+Row  1 Col  2 [C2   ] type=STRING  val='Sommaire' formula='' [Merged C2:E2] (TOP-LEFT)
+Row  6 Col  2 [C7   ] type=STRING  val='Présentation de l'entreprise' formula='' [Merged C7:F7] (TOP-LEFT)
+Row  9 Col  2 [C10  ] type=STRING  val='Données générales' formula='' [Merged C10:F10] (TOP-LEFT)
+Row 11 Col  2 [C12  ] type=STRING  val='Nom de la structure' formula='' [Merged C12:D12] (TOP-LEFT)
+Row 13 Col  2 [C14  ] type=STRING  val='Année de création' formula='' [Merged C14:D14] (TOP-LEFT)
+Row 15 Col  2 [C16  ] type=STRING  val='Forme juridique' formula='' [Merged C16:D16] (TOP-LEFT)
+Row 15 Col  4 [E16  ] type=BLANK   val='' formula='' [Merged E16:F16] (TOP-LEFT)
+Row 17 Col  2 [C18  ] type=STRING  val='Activité principale' formula='' [Merged C18:D18] (TOP-LEFT)
+Row 19 Col  2 [C20  ] type=STRING  val='Adresse' formula='' [Merged C20:D20] (TOP-LEFT)
+Row 21 Col  2 [C22  ] type=STRING  val='Ville' formula='' [Merged C22:D22] (TOP-LEFT)
+Row 23 Col  2 [C24  ] type=STRING  val='Point focal' formula='' [Merged C24:D24] (TOP-LEFT)
+Row 25 Col  2 [C26  ] type=STRING  val='Fonction' formula='' [Merged C26:D26] (TOP-LEFT)
+Row 27 Col  2 [C28  ] type=STRING  val='Tel' formula='' [Merged C28:D28] (TOP-LEFT)
+Row 29 Col  2 [C30  ] type=STRING  val='Email' formula='' [Merged C30:D30] (TOP-LEFT)
+Row 31 Col  2 [C32  ] type=STRING  val='Informations système comptable' formula='' [Merged C32:F32] (TOP-LEFT)
+Row 33 Col  2 [C34  ] type=STRING  val='Dernier exercice  clôturé' formula='' [Merged C34:D34] (TOP-LEFT)
+Row 33 Col  4 [E34  ] type=BLANK   val='' formula='' [Merged E34:F34] (TOP-LEFT)
+Row 35 Col  2 [C36  ] type=STRING  val='États financiers certifiés' formula='' [Merged C36:D36] (TOP-LEFT)
+Row 35 Col  4 [E36  ] type=STRING  val='Etats financiers fiannciers' formula='' [Merged E36:F36] (TOP-LEFT)
+Row 37 Col  2 [C38  ] type=STRING  val='Cabinet d'assistance comptable' formula='' [Merged C38:D38] (TOP-LEFT)
+Row 37 Col  4 [E38  ] type=STRING  val='OUI' formula='' [Merged E38:F38] (TOP-LEFT)
+Row 39 Col  2 [C40  ] type=STRING  val='Commissaire aux comptes' formula='' [Merged C40:D40] (TOP-LEFT)
+Row 39 Col  4 [E40  ] type=STRING  val='Néant' formula='' [Merged E40:F40] (TOP-LEFT)
+Row 42 Col  2 [C43  ] type=STRING  val='Actionnariat' formula='' [Merged C43:F43] (TOP-LEFT)
+Row 44 Col  3 [D45  ] type=STRING  val='Prénom' formula=''
+Row 44 Col  4 [E45  ] type=STRING  val='Nom' formula=''
+Row 44 Col  5 [F45  ] type=STRING  val='% détenu' formula=''
+Row 46 Col  2 [C47  ] type=STRING  val='1-' formula=''
+Row 54 Col  2 [C55  ] type=STRING  val='2-' formula=''
+Row 56 Col  2 [C57  ] type=STRING  val='3-' formula=''
+Row 58 Col  2 [C59  ] type=STRING  val='3-' formula=''
+Row 64 Col  2 [C65  ] type=STRING  val='Total' formula=''
+Row 64 Col  5 [F65  ] type=FORMULA val='F47+F55+F57+F59' formula='F47+F55+F57+F59'
+Row 64 Col  6 [G65  ] type=FORMULA val='IF(F65<>1,"Le total doit être égal à 100%. Vérifiez les données!","")' formula='IF(F65<>1,"Le total doit être égal à 100%. Vérifiez les données!","")'
+Row 66 Col  2 [C67  ] type=STRING  val='Management et Oragnigramme' formula='' [Merged C67:F67] (TOP-LEFT)
+Row 68 Col  3 [D69  ] type=STRING  val='Prénom' formula=''
+Row 68 Col  4 [E69  ] type=STRING  val='Nom' formula=''
+Row 68 Col  5 [F69  ] type=STRING  val='Fonction/ Année d'expérience' formula=''
+Row 70 Col  2 [C71  ] type=STRING  val='1-' formula=''
+Row 72 Col  2 [C73  ] type=STRING  val='2-' formula=''
+Row 74 Col  2 [C75  ] type=STRING  val='3-' formula=''
+Row 76 Col  2 [C77  ] type=STRING  val='4-' formula=''
+Row 78 Col  2 [C79  ] type=STRING  val='5-' formula=''
+Row 80 Col  2 [C81  ] type=STRING  val='7-' formula=''
+Row 82 Col  2 [C83  ] type=STRING  val='8-' formula=''
+Row 84 Col  3 [D85  ] type=BLANK   val='' formula='' [Merged D85:F88] (TOP-LEFT)
+Row 89 Col  2 [C90  ] type=STRING  val='Historique de l'entreprise' formula='' [Merged C90:F90] (TOP-LEFT)
+Row 91 Col  3 [D92  ] type=BLANK   val='' formula='' [Merged D92:F101] (TOP-LEFT)
+Row 102 Col  2 [C103 ] type=STRING  val='Relations bancaires' formula='' [Merged C103:F103] (TOP-LEFT)
+Row 104 Col  3 [D105 ] type=STRING  val='Banque' formula=''
+Row 104 Col  4 [E105 ] type=STRING  val='Engagement en cours' formula=''
+Row 104 Col  5 [F105 ] type=STRING  val='N° Compte' formula=''
+Row 106 Col  2 [C107 ] type=STRING  val='1-' formula=''
+Row 106 Col  3 [D107 ] type=STRING  val='Ecobank' formula=''
+Row 106 Col  4 [E107 ] type=STRING  val='Aucun' formula=''
+Row 108 Col  2 [C109 ] type=STRING  val='2-' formula=''
+Row 110 Col  2 [C111 ] type=STRING  val='3-' formula=''
+Row 112 Col  2 [C113 ] type=STRING  val='4-' formula=''
+Row 114 Col  2 [C115 ] type=STRING  val='Coordonnées Agence' formula='' [Merged C115:F115] (TOP-LEFT)
+Row 116 Col  3 [D117 ] type=STRING  val='Agence' formula=''
+Row 116 Col  4 [E117 ] type=STRING  val='N° Tel' formula=''
+Row 116 Col  5 [F117 ] type=STRING  val='E-mail' formula=''
+Row 118 Col  3 [D119 ] type=STRING  val='Agence mermoz' formula=''
+Row 121 Col  2 [C122 ] type=STRING  val='Observations' formula=''
+Row 122 Col  3 [D123 ] type=STRING  val='Aucun engagement en cours ' formula='' [Merged D123:F127] (TOP-LEFT)
+Row 128 Col  2 [C129 ] type=STRING  val='Activités' formula='' [Merged C129:F129] (TOP-LEFT)
+Row 130 Col  3 [D131 ] type=STRING  val='Produit/service' formula=''
+Row 130 Col  4 [E131 ] type=STRING  val='Part dans le CA N-1' formula=''
+Row 130 Col  5 [F131 ] type=STRING  val='Part dans le CA N-2' formula=''
+Row 132 Col  2 [C133 ] type=STRING  val='1-' formula=''
+Row 134 Col  2 [C135 ] type=STRING  val='2-' formula=''
+Row 136 Col  2 [C137 ] type=STRING  val='3-' formula=''
+Row 138 Col  2 [C139 ] type=STRING  val='5-' formula=''
+Row 140 Col  2 [C141 ] type=STRING  val='5-' formula=''
+Row 142 Col  2 [C143 ] type=STRING  val='Liste des biens' formula='' [Merged C143:F143] (TOP-LEFT)
+Row 144 Col  2 [C145 ] type=STRING  val='1-' formula=''
+Row 144 Col  4 [E145 ] type=BLANK   val='' formula='' [Merged E145:F145] (TOP-LEFT)
+Row 146 Col  2 [C147 ] type=STRING  val='2-' formula=''
+Row 146 Col  4 [E147 ] type=BLANK   val='' formula='' [Merged E147:F147] (TOP-LEFT)
+Row 148 Col  2 [C149 ] type=STRING  val='3-' formula=''
+Row 148 Col  4 [E149 ] type=BLANK   val='' formula='' [Merged E149:F149] (TOP-LEFT)
+Row 150 Col  2 [C151 ] type=STRING  val='4-' formula=''
+Row 150 Col  4 [E151 ] type=BLANK   val='' formula='' [Merged E151:F151] (TOP-LEFT)
+Row 152 Col  2 [C153 ] type=STRING  val='Principaux clients' formula='' [Merged C153:F153] (TOP-LEFT)
+Row 154 Col  3 [D155 ] type=STRING  val='Nom du client' formula=''
+Row 154 Col  4 [E155 ] type=STRING  val='CA sur le client N-1' formula=''
+Row 154 Col  5 [F155 ] type=STRING  val='Délai de règlement' formula=''
+Row 156 Col  2 [C157 ] type=STRING  val='1-' formula=''
+Row 158 Col  2 [C159 ] type=STRING  val='2-' formula=''
+Row 160 Col  2 [C161 ] type=STRING  val='3-' formula=''
+Row 162 Col  2 [C163 ] type=STRING  val='4-' formula=''
+Row 164 Col  2 [C165 ] type=STRING  val='Observations' formula=''
+Row 165 Col  3 [D166 ] type=BLANK   val='' formula='' [Merged D166:F169] (TOP-LEFT)
+Row 170 Col  2 [C171 ] type=STRING  val='Principaux fournisseurs' formula='' [Merged C171:F171] (TOP-LEFT)
+Row 172 Col  3 [D173 ] type=STRING  val='Nom du fournisseur' formula=''
+Row 172 Col  4 [E173 ] type=STRING  val='Produit' formula=''
+Row 172 Col  5 [F173 ] type=STRING  val='Délai de paiement' formula=''
+Row 174 Col  2 [C175 ] type=STRING  val='1-' formula=''
+Row 174 Col  5 [F175 ] type=NUMERIC val='-' formula=''
+Row 176 Col  2 [C177 ] type=STRING  val='2-' formula=''
+Row 178 Col  2 [C179 ] type=STRING  val='3-' formula=''
+Row 180 Col  2 [C181 ] type=STRING  val='4-' formula=''
+Row 182 Col  2 [C183 ] type=STRING  val='Observations' formula=''
+Row 183 Col  3 [D184 ] type=BLANK   val='' formula='' [Merged D184:F190] (TOP-LEFT)
+

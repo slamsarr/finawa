@@ -1,0 +1,270 @@
+<div class="container-fluid">
+  <div class="row mb-3 align-items-center app-page-head">
+    <div class="col">
+      <h4 class="page-title mb-2">Labels</h4>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/">Accueil</a></li>
+          <li class="breadcrumb-item">Paramètres</li>
+          @if (selectedType) {
+            <li class="breadcrumb-item">
+              <a href="javascript:void(0)" (click)="backToTypes()">Labels</a>
+            </li>
+            <li class="breadcrumb-item active">{{ typeLabel(selectedType) }}</li>
+          } @else {
+            <li class="breadcrumb-item active">Labels</li>
+          }
+        </ol>
+      </nav>
+    </div>
+    @if (selectedType) {
+      <div class="col-auto d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm" (click)="backToTypes()">
+          <i class="las la-arrow-left me-1"></i>Retour
+        </button>
+        <button class="btn btn-primary" (click)="openModal(labelModal)">
+          <i class="las la-plus me-1"></i>Ajouter un label
+        </button>
+      </div>
+    }
+  </div>
+
+  @if (!selectedType) {
+    <div class="card">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h6 class="mb-0">Types de labels</h6>
+        @if (referentialTypes$ | async; as types) {
+          <small class="text-muted">{{ types.payload?.length ?? 0 }} type(s)</small>
+        }
+      </div>
+      <div class="card-body p-0">
+        @if (referentialTypes$ | async; as types) {
+          @if (types.payload?.length === 0) {
+            <div class="text-center py-5 text-muted">Aucun type de label trouvé</div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover table-centered mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th>LIBELLE</th>
+                    <th>CODE</th>
+                    <th>DESCRIPTION</th>
+                    <th class="text-center">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (type of types.payload; track type) {
+                    <tr style="cursor: pointer" (click)="selectType(type)">
+                      <td>
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="bg-primary-subtle rounded p-2">
+                            <i class="las la-tags text-primary"></i>
+                          </div>
+                          <strong>{{ typeLabel(type) }}</strong>
+                        </div>
+                      </td>
+                      <td>
+                        <code class="text-muted small">{{ type.type }}</code>
+                      </td>
+                      <td>
+                        <code class="text-muted small">{{ type.description }}</code>
+                      </td>
+                      <td class="text-center">
+                        <button
+                          class="btn btn-sm btn-soft-primary"
+                          (click)="selectType(type); $event.stopPropagation()"
+                          title="Gérer les labels"
+                        >
+                          <i class="las la-cog me-1"></i>Gérer
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        } @else {
+          <div class="text-center py-5">
+            <span class="spinner-border text-primary"></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (selectedType) {
+    <div class="card">
+      <div class="card-header">
+        <div class="row g-2 align-items-center">
+          <div class="col-md-auto d-flex align-items-center gap-2">
+            <div class="bg-primary-subtle rounded p-2">
+              <i class="las la-tags text-primary"></i>
+            </div>
+            <div>
+              <h6 class="mb-0 fw-semibold">{{ typeLabel(selectedType) }}</h6>
+              <small class="text-muted">{{ selectedType.type }}</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Rechercher par nom..."
+              [(ngModel)]="searchName"
+              (keyup.enter)="onSearch()"
+            />
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-outline-secondary btn-sm" (click)="onSearch()" title="Rechercher">
+              <i class="las la-search"></i>
+            </button>
+          </div>
+          <div class="col-auto">
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              (click)="onReset()"
+              title="Réinitialiser"
+            >
+              <i class="las la-sync"></i>
+            </button>
+          </div>
+          <div class="col-auto ms-auto">
+            <small class="text-muted">{{ totalElements }} label(s)</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover table-centered mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>NOM</th>
+                <th>DESCRIPTION</th>
+                <th class="text-center">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (labelList$ | async; as labels) {
+                @for (label of labels.payload; track label.id) {
+                  <tr>
+                    <td><strong>{{ label.name }}</strong></td>
+                    <td class="text-muted small">{{ label.description || '—' }}</td>
+                    <td class="text-center">
+                      <button
+                        class="btn btn-sm btn-soft-primary me-1"
+                        (click)="openModal(labelModal, label)"
+                        title="Modifier"
+                      >
+                        <i class="las la-pen"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-soft-danger"
+                        (click)="confirmDelete(deleteModal, label)"
+                        title="Supprimer"
+                      >
+                        <i class="las la-trash-alt"></i>
+                      </button>
+                    </td>
+                  </tr>
+                }
+                @if (labels.payload?.length === 0) {
+                  <tr>
+                    <td colspan="4" class="text-center py-5 text-muted">
+                      <i class="las la-tags fs-1 d-block mb-2"></i>
+                      Aucun label trouvé
+                    </td>
+                  </tr>
+                }
+              } @else {
+                <tr>
+                  <td colspan="4" class="text-center py-5">
+                    <span class="spinner-border text-primary"></span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      @if (totalElements > size) {
+        <div class="card-footer d-flex justify-content-end">
+          <ngb-pagination
+            [collectionSize]="totalElements"
+            [(page)]="page"
+            [pageSize]="size"
+            [maxSize]="5"
+            (pageChange)="onPageChange($event)"
+          />
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<ng-template #labelModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ selectedLabel?.id ? 'Modifier le label' : 'Ajouter un label' }} —
+      {{ selectedLabel!.name }}
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedLabel) {
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Nom <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedLabel.name"
+            placeholder="Nom du label"
+          />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description <span class="text-danger">*</span></label>
+          <textarea
+            class="form-control"
+            style="resize: none;"
+            rows="2"
+            [(ngModel)]="selectedLabel.description"
+            placeholder="Description optionnelle..."
+          ></textarea>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button
+      class="btn btn-primary"
+      (click)="save(modal)"
+      [disabled]="saving || !selectedLabel?.name?.trim() || !selectedLabel?.description?.trim()"
+    >
+      @if (saving) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+      }
+      Enregistrer
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header border-0">
+    <h5 class="modal-title text-danger">
+      <i class="las la-exclamation-triangle me-2"></i>Confirmation
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center">
+    <p>Supprimer <strong>{{ selectedLabel?.name }}</strong> ?</p>
+    <small class="text-muted">Cette action est irréversible.</small>
+  </div>
+  <div class="modal-footer border-0">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button class="btn btn-danger" (click)="modal.close()">Supprimer</button>
+  </div>
+</ng-template>

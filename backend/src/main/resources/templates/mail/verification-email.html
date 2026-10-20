@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vérification de votre compte FINAWA</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f6f5f7;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-size-adjust: none;
+            width: 100% !important;
+            height: 100% !important;
+            line-height: 1.6;
+        }
+        .wrapper {
+            width: 100%;
+            background-color: #f6f5f7;
+            padding: 40px 0;
+        }
+        .container {
+            max-width: 580px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e9ecef;
+        }
+        .header {
+            background-color: #202221;
+            padding: 35px 25px 28px;
+            text-align: center;
+            border-bottom: 4px solid #dd241d;
+        }
+        .brand-title {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .brand-title span {
+            color: #dd241d;
+        }
+        .brand-subtitle {
+            margin: 6px 0 0 0;
+            font-size: 13px;
+            color: #d9e1ec;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        .content {
+            padding: 35px 32px;
+            background-color: #ffffff;
+        }
+        .greeting {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #202221;
+        }
+        .greeting span {
+            color: #dd241d;
+        }
+        p {
+            font-size: 15px;
+            color: #495057;
+            margin: 0 0 16px 0;
+            line-height: 1.65;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 32px 0 28px;
+        }
+        .btn {
+            background-color: #dd241d !important;
+            color: #ffffff !important;
+            padding: 14px 36px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 6px;
+            display: inline-block;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(221, 36, 29, 0.35);
+        }
+        .info-box {
+            background-color: #f6f5f7;
+            border-left: 4px solid #dd241d;
+            padding: 14px 18px;
+            margin: 26px 0 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+            color: #6c757d;
+        }
+        .info-box strong {
+            color: #202221;
+        }
+        .fallback-link {
+            font-size: 12px;
+            color: #888888;
+            word-break: break-all;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            line-height: 1.5;
+        }
+        .fallback-link a {
+            color: #dd241d;
+            text-decoration: underline;
+        }
+        .footer {
+            background-color: #202221;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #adb5bd;
+            border-top: 1px solid #2d302f;
+        }
+        .footer a {
+            color: #dd241d;
+            text-decoration: none;
+        }
+        .footer-copy {
+            margin: 6px 0 0 0;
+            font-size: 11px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <!-- Header matching Finawa Dark Navbar / Auth Header -->
+            <div class="header">
+                <div class="brand-title">FINA<span>WA</span></div>
+                <div class="brand-subtitle">Plateforme d'intermédiation financière & d'accompagnement</div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div class="greeting">
+                    Bonjour <span th:text="${recipientName}">Utilisateur</span>,
+                </div>
+                <p>
+                    Bienvenue sur la plateforme <strong>FINAWA</strong>. Votre compte entreprise a bien été pré-enregistré.
+                </p>
+                <p>
+                    Afin de sécuriser votre accès et d'activer l'ensemble de vos fonctionnalités (dossiers de financement, simulateur, matching bancaire), veuillez confirmer votre adresse email :
+                </p>
+                
+                <!-- Call to Action Button matching frontend primary button style -->
+                <div class="btn-container">
+                    <!--[if mso]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" th:href="${verificationUrl}" style="height:46px;v-text-anchor:middle;width:260px;" arcsize="13%" stroke="f" fillcolor="#dd241d">
+                    <w:anchorlock/>
+                    <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">Confirmer mon compte</center>
+                    </v:roundrect>
+                    <![endif]-->
+                    <a th:href="${verificationUrl}" class="btn" target="_blank">Confirmer mon compte</a>
+                </div>
+
+                <!-- Info Note -->
+                <div class="info-box">
+                    <strong>Information importante :</strong> Ce lien de validation est actif pendant <strong>24 heures</strong>. Au-delà, vous pourrez solliciter un nouveau lien depuis la page de connexion.
+                </div>
+
+                <!-- Fallback URL -->
+                <div class="fallback-link">
+                    Si le bouton ci-dessus ne répond pas, veuillez copier-coller ce lien dans votre navigateur web :<br/>
+                    <a th:href="${verificationUrl}" th:text="${verificationUrl}">Lien de validation du compte</a>
+                </div>
+            </div>
+
+            <!-- Footer matching Finawa dark style -->
+            <div class="footer">
+                <div>FINAWA &mdash; Connectez votre entreprise au financement</div>
+                <div class="footer-copy">
+                    Kapit-Group &copy; 2026. Tous droits réservés.<br/>
+                    Ceci est un message automatique, merci de ne pas y répondre directement.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

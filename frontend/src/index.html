@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>FINAWA Platform</title>
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="./assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function () {
+      var savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    })();
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbvyBxmMbFhrzP9Z8moyYr6dCr-pzjhBE"></script>
+  <style>
+    #splash-screen {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background: #ffffff;
+      display: flex;
+      height: 100%;
+      width: 100%;
+      transform: translate(-50%, -50%);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+      overflow: hidden;
+    }
+
+    [data-bs-theme="dark"] #splash-screen {
+      background: #181b1e;
+    }
+
+    #splash-screen.remove {
+      animation: fadeout 0.45s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fadeout {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <app-root></app-root>
+  <div id="splash-screen">
+    <img alt="Logo" src="./assets/images/logo.png" style="margin-left: 6px" />
+  </div>
+  <script>
+    function hideSplash() {
+      const splashScreen = document.querySelector('#splash-screen')
+      if (!splashScreen || splashScreen.classList.contains('remove')) return
+      splashScreen.classList.add('remove')
+      splashScreen.addEventListener('animationend', () => splashScreen.remove(), { once: true })
+      setTimeout(() => splashScreen.remove(), 800)
+    }
+    window.addEventListener('load', hideSplash)
+    setTimeout(hideSplash, 1800)
+  </script>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+</body>
+
+</html>

@@ -1,0 +1,422 @@
+<div class="register-page-wrapper">
+  <div class="auth-atmosphere" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="mesh"></span>
+  </div>
+
+  <!-- Floating Theme Switcher -->
+  <button
+    type="button"
+    class="theme-floating-btn"
+    (click)="toggleTheme()"
+    [title]="(themeService.theme$ | async) === 'dark' ? 'Mode Clair' : 'Mode Sombre'"
+    aria-label="Changer de thème"
+  >
+    <i [class]="(themeService.theme$ | async) === 'dark' ? 'fas fa-sun text-warning' : 'fas fa-moon'"></i>
+  </button>
+
+  <div class="register-card-container">
+    
+    <!-- LEFT PANEL: Value Proposition & Assurance -->
+    <div class="register-showcase-panel">
+      <div class="showcase-content">
+        <a routerLink="/" class="showcase-brand mb-4 d-inline-block">
+          <img src="assets/images/logo.png" alt="FINAWA" class="showcase-logo" />
+          <strong class="showcase-wordmark">FINAWA<span>.</span></strong>
+        </a>
+
+        <span class="showcase-eyebrow">Profil entreprise</span>
+
+        <h1 class="showcase-title">
+          Créez votre identité numérique pour le <span class="text-gradient-crimson">matching financier</span>
+        </h1>
+
+        <p class="showcase-subtitle">
+          FINAWA collecte les informations clés pour qualifier votre besoin, préparer votre dossier et vous orienter vers les bons acteurs.
+        </p>
+
+        <div class="register-perks-list mt-4">
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-check-double"></i></div>
+            <div class="perk-text">
+              <strong>Profil guidé</strong>
+              <span>Statut, secteur, région, CA et besoins structurés dès l'inscription</span>
+            </div>
+          </div>
+
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-folder-open"></i></div>
+            <div class="perk-text">
+              <strong>Coffre-fort Numérique</strong>
+              <span>Centralisez vos pièces d'immatriculation et bilans en toute sécurité</span>
+            </div>
+          </div>
+
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-handshake"></i></div>
+            <div class="perk-text">
+              <strong>Orientation ciblée</strong>
+              <span>Banques, SFD, fonds ou experts selon votre profil et votre demande</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-security-box mt-4 p-3 rounded-3">
+          <div class="d-flex align-items-center gap-2 text-xs text-slate-300">
+            <i class="fas fa-lock text-success fs-6"></i>
+            <span>Données confidentielles protégées &bull; Normes de sécurité bancaire</span>
+          </div>
+        </div>
+
+        <div class="showcase-footer mt-4 pt-3 border-top border-white-10 text-xs text-slate-400">
+          <span>FINAWA Platform &copy; 2026 &bull; Propulsé par Kapit Group</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Registration Form -->
+    <div class="register-form-panel">
+      
+      <div class="form-panel-header mb-4">
+        <div class="d-lg-none text-center mb-3">
+          <a routerLink="/" class="mobile-brand">
+            <img src="assets/images/logo.png" alt="FINAWA" height="38" />
+            <strong>FINAWA<span>.</span></strong>
+          </a>
+        </div>
+        <span class="form-eyebrow">Nouvelle entreprise</span>
+        <h2 class="form-title">Créer votre profil FINAWA</h2>
+        <p class="form-subtitle">Renseignez les informations de base qui permettront d'initialiser votre parcours de préqualification.</p>
+      </div>
+
+      <!-- Error message alert -->
+      @if (errorMessage) {
+        <div class="auth-alert-error mb-4 animate__animated animate__shakeX">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-exclamation-triangle text-danger fs-5"></i>
+            <span class="text-xs text-danger-emphasis">{{ errorMessage }}</span>
+          </div>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+        
+        <!-- SECTION 1: Identité de l'entreprise -->
+        <div class="form-section-title">
+          <span class="section-num">1</span>
+          <span>Identité &amp; accès</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <!-- Nom de l'entreprise -->
+          <div class="col-12">
+            <label class="form-label-custom">Nom de l'entreprise <span class="text-crimson">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-building input-icon"></i>
+              <input
+                type="text"
+                class="form-control-custom"
+                formControlName="name"
+                placeholder="Ex: Teranga Agro &amp; Technologies SARL"
+                [class.is-invalid]="form.get('name')?.touched && form.get('name')?.invalid"
+              />
+            </div>
+            @if (form.get('name')?.touched && form.get('name')?.invalid) {
+              <div class="field-error-msg">Le nom de l'entreprise est obligatoire.</div>
+            }
+          </div>
+
+          <!-- Email de connexion -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Email professionnel <span class="text-crimson">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input
+                type="email"
+                class="form-control-custom"
+                formControlName="email"
+                placeholder="contact@entreprise.com"
+                [class.is-invalid]="form.get('email')?.touched && form.get('email')?.invalid"
+              />
+            </div>
+            @if (form.get('email')?.touched && form.get('email')?.invalid) {
+              <div class="field-error-msg">Un email valide est obligatoire.</div>
+            }
+          </div>
+
+          <!-- Téléphone -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Téléphone (SMS / WhatsApp) <span class="text-crimson">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-phone input-icon"></i>
+              <input
+                type="tel"
+                class="form-control-custom"
+                formControlName="phone"
+                placeholder="+221 77 123 45 67"
+              />
+            </div>
+          </div>
+
+          <!-- Genre du dirigeant -->
+          <div class="col-12">
+            <label class="form-label-custom">Genre du dirigeant principal (Indicateur d'impact) <span class="text-crimson">*</span></label>
+            <select class="form-select-custom" formControlName="genre">
+              <option value="Femme">Femme entrepreneure (Priorité RSE & Bailleurs)</option>
+              <option value="Homme">Homme</option>
+            </select>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Mot de passe <span class="text-crimson">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input
+                type="password"
+                class="form-control-custom"
+                formControlName="password"
+                placeholder="Min. 8 caractères"
+                [class.is-invalid]="form.get('password')?.touched && form.get('password')?.invalid"
+              />
+            </div>
+            @if (form.get('password')?.touched && form.get('password')?.invalid) {
+              <div class="field-error-msg">8 caractères minimum requis.</div>
+            }
+          </div>
+
+          <!-- Confirmation Mot de passe -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Confirmer mot de passe <span class="text-crimson">*</span></label>
+            <div class="input-wrapper">
+              <i class="fas fa-shield-alt input-icon"></i>
+              <input
+                type="password"
+                class="form-control-custom"
+                formControlName="confirmPassword"
+                placeholder="Retapez le mot de passe"
+                [class.is-invalid]="(form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) || (form.get('confirmPassword')?.touched && form.errors?.['passwordMismatch'])"
+              />
+            </div>
+            @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.errors?.['required']) {
+              <div class="field-error-msg">Confirmation requise.</div>
+            } @else if (form.get('confirmPassword')?.touched && form.errors?.['passwordMismatch']) {
+              <div class="field-error-msg">Les mots de passe ne correspondent pas.</div>
+            }
+          </div>
+        </div>
+
+        <!-- SECTION 2: Caractéristiques Entreprise -->
+        <div class="form-section-title">
+          <span class="section-num">2</span>
+          <span>Activité &amp; immatriculation</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <!-- RCCM -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Numéro RCCM (Si immatriculée)</label>
+            <div class="input-wrapper">
+              <i class="fas fa-file-contract input-icon"></i>
+              <input
+                type="text"
+                class="form-control-custom"
+                formControlName="rccm"
+                placeholder="Ex: SN-DKR-2025-B-182"
+              />
+            </div>
+          </div>
+
+          <!-- NINEA -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Numéro NINEA (Identifiant fiscal)</label>
+            <div class="input-wrapper">
+              <i class="fas fa-id-card input-icon"></i>
+              <input
+                type="text"
+                class="form-control-custom"
+                formControlName="ninea"
+                placeholder="Ex: 009876543"
+              />
+            </div>
+          </div>
+
+          <!-- Type d'entreprise -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Forme juridique <span class="text-crimson">*</span></label>
+            <select
+              class="form-select-custom"
+              formControlName="typeId"
+              [class.is-invalid]="form.get('typeId')?.touched && form.get('typeId')?.invalid"
+            >
+              <option [ngValue]="null" disabled>-- Sélectionner un type --</option>
+              @for (t of enterpriseTypes; track t.id) {
+                <option [ngValue]="t.id">{{ t.name }}</option>
+              }
+            </select>
+            @if (form.get('typeId')?.touched && form.get('typeId')?.invalid) {
+              <div class="field-error-msg">Type requis.</div>
+            }
+          </div>
+
+          <!-- Secteur d'activité -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Secteur d'activité <span class="text-crimson">*</span></label>
+            <select
+              class="form-select-custom"
+              formControlName="sectorId"
+              [class.is-invalid]="form.get('sectorId')?.touched && form.get('sectorId')?.invalid"
+            >
+              <option [ngValue]="null" disabled>-- Sélectionner un secteur --</option>
+              @for (s of enterpriseSectors; track s.id) {
+                <option [ngValue]="s.id">{{ s.name }}</option>
+              }
+            </select>
+            @if (form.get('sectorId')?.touched && form.get('sectorId')?.invalid) {
+              <div class="field-error-msg">Secteur requis.</div>
+            }
+          </div>
+
+          <!-- Région -->
+          <div class="col-md-4">
+            <label class="form-label-custom">Région <span class="text-crimson">*</span></label>
+            <select
+              class="form-select-custom"
+              formControlName="region"
+              [class.is-invalid]="form.get('region')?.touched && form.get('region')?.invalid"
+            >
+              <option value="" disabled>-- Région --</option>
+              @for (r of regions; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+            @if (form.get('region')?.touched && form.get('region')?.invalid) {
+              <div class="field-error-msg">Région requise.</div>
+            }
+          </div>
+
+          <!-- Nombre d'employés -->
+          <div class="col-md-4">
+            <label class="form-label-custom">Employés (1-500) <span class="text-crimson">*</span></label>
+            <input
+              type="number"
+              class="form-control-custom"
+              formControlName="employeeCount"
+              placeholder="Ex: 5"
+              [class.is-invalid]="form.get('employeeCount')?.touched && form.get('employeeCount')?.invalid"
+            />
+            @if (form.get('employeeCount')?.touched && form.get('employeeCount')?.invalid) {
+              <div class="field-error-msg">1 à 500 requis.</div>
+            }
+          </div>
+
+          <!-- CA Annuel -->
+          <div class="col-md-4">
+            <label class="form-label-custom">CA Annuel (FCFA) <span class="text-crimson">*</span></label>
+            <input
+              type="number"
+              class="form-control-custom"
+              formControlName="annualTurnover"
+              placeholder="Ex: 10000000"
+              [class.is-invalid]="form.get('annualTurnover')?.touched && form.get('annualTurnover')?.invalid"
+            />
+            @if (form.get('annualTurnover')?.touched && form.get('annualTurnover')?.invalid) {
+              <div class="field-error-msg">Montant valide requis.</div>
+            }
+          </div>
+
+          <!-- Date de création -->
+          <div class="col-12">
+            <label class="form-label-custom">Date de création de l'entreprise <span class="text-crimson">*</span></label>
+            <input
+              type="datetime-local"
+              class="form-control-custom"
+              formControlName="creationDate"
+              [class.is-invalid]="form.get('creationDate')?.touched && form.get('creationDate')?.invalid"
+            />
+            @if (form.get('creationDate')?.touched && form.get('creationDate')?.invalid) {
+              <div class="field-error-msg">Date de création obligatoire.</div>
+            }
+          </div>
+        </div>
+
+        <!-- SECTION 3: Besoin principal & Origine (Section 5.1 & 5.2 CDC) -->
+        <div class="form-section-title">
+          <span class="section-num">3</span>
+          <span>Besoin principal &amp; canal</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <!-- Besoin principal -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Besoin principal recherché <span class="text-crimson">*</span></label>
+            <select class="form-select-custom" formControlName="mainNeed">
+              @for (n of needs; track n) {
+                <option [value]="n">{{ n }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Origine / Partenaire prescripteur -->
+          <div class="col-md-6">
+            <label class="form-label-custom">Canal d'accès / Partenaire <span class="text-crimson">*</span></label>
+            <select class="form-select-custom" formControlName="partnerOrigin">
+              @for (p of partnerOrigins; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Méthode de validation -->
+          <div class="col-12">
+            <label class="form-label-custom">Validation du compte <span class="text-crimson">*</span></label>
+            <select class="form-select-custom" formControlName="validationMethod">
+              <option value="Email & OTP SMS">Double validation : Email sécurisé + Code OTP SMS</option>
+              <option value="Email direct">Validation par lien Email direct</option>
+            </select>
+          </div>
+
+          <!-- Description / Résumé -->
+          <div class="col-12">
+            <label class="form-label-custom">Description &amp; Activité (Optionnel)</label>
+            <textarea
+              rows="2"
+              class="form-control-custom"
+              formControlName="summary"
+              placeholder="Brève présentation des activités et ambitions de votre entreprise..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn-register-primary w-100 mt-3"
+          [disabled]="submitting || form.invalid"
+        >
+          @if (submitting) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            <span>Création du compte en cours...</span>
+          } @else {
+            <i class="fas fa-check-circle me-2"></i>
+            <span>Créer mon compte entreprise</span>
+          }
+        </button>
+      </form>
+
+      <!-- Bottom Redirect -->
+      <div class="form-panel-footer text-center mt-4 pt-3 border-top">
+        <p class="text-sm text-slate-500 mb-0">
+          Vous possédez déjà un compte ?
+          <a routerLink="/auth/log-in" class="text-crimson fw-bold text-decoration-none ms-1">
+            Se connecter
+          </a>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

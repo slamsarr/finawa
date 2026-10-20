@@ -1,0 +1,735 @@
+<main class="fw-shell">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 1 — NAVBAR (LIGHT & AIRY)
+  ═══════════════════════════════════════════════════════════ -->
+  <nav class="fw-nav" [class.fw-nav--scrolled]="navScrolled">
+    <div class="fw-nav__inner">
+
+      <!-- Logo -->
+      <a routerLink="/" class="fw-nav__brand">
+        <div class="fw-nav__brand-mark">
+          <span>F</span>
+        </div>
+        <div class="fw-nav__brand-text">
+          <strong>FINAWA</strong>
+          <span>Intermédiation Financière</span>
+        </div>
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="fw-nav__links">
+        <li><a routerLink="/">Accueil</a></li>
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#comment">Comment ça marche ?</a></li>
+        <li><a href="#partenaires">Pour les partenaires</a></li>
+        <li><a href="#faq">À propos</a></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="fw-nav__actions">
+        <a routerLink="/auth/log-in" class="fw-btn fw-btn--ghost">Connexion</a>
+        <a routerLink="/auth/register" class="fw-btn fw-btn--primary">Commencer</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button
+        class="fw-nav__burger"
+        [class.is-open]="mobileMenuOpen"
+        (click)="mobileMenuOpen = !mobileMenuOpen"
+        aria-label="Menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="fw-nav__mobile" [class.is-open]="mobileMenuOpen">
+      <a routerLink="/" (click)="mobileMenuOpen=false">Accueil</a>
+      <a href="#solutions" (click)="mobileMenuOpen=false">Solutions</a>
+      <a href="#comment" (click)="mobileMenuOpen=false">Comment ça marche ?</a>
+      <a href="#partenaires" (click)="mobileMenuOpen=false">Pour les partenaires</a>
+      <a href="#faq" (click)="mobileMenuOpen=false">À propos</a>
+      <div class="fw-nav__mobile-actions">
+        <a routerLink="/auth/log-in" class="fw-btn fw-btn--ghost" (click)="mobileMenuOpen=false">Connexion</a>
+        <a routerLink="/auth/register" class="fw-btn fw-btn--primary" (click)="mobileMenuOpen=false">Commencer</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 2 — HERO (FOND CLAIR & PHOTOS HUMANISÉES)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-hero">
+    <div class="fw-container fw-hero__inner">
+
+      <!-- Left column -->
+      <div class="fw-hero__content fw-reveal">
+        <span class="fw-hero__label">LA FINANCE AU SERVICE DE VOS AMBITIONS</span>
+
+        <h1 class="fw-hero__title">
+          Le financement de votre projet<br>
+          <span class="fw-hero__rotating">
+            <span *ngFor="let word of rotatingWords; let i = index"
+              class="fw-hero__word"
+              [class.is-active]="i === currentWordIndex">
+              {{ word }}
+            </span>
+          </span>
+          commence ici.
+        </h1>
+
+        <p class="fw-hero__desc">
+          FINAWA facilite votre recherche de financement et vous accompagne dans la mise en relation
+          avec les acteurs financiers adaptés à vos ambitions en Afrique de l'Ouest.
+        </p>
+
+        <div class="fw-hero__ctas">
+          <a routerLink="/auth/register" class="fw-btn fw-btn--primary fw-btn--lg">
+            Trouver un financement
+          </a>
+          <a href="#comment" class="fw-btn fw-btn--outline fw-btn--lg">
+            Découvrir FINAWA
+          </a>
+        </div>
+
+        <p class="fw-hero__reassure">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+            <path d="M7 0C3.134 0 0 3.134 0 7s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7zm3.207 5.207-3.5 3.5a.75.75 0 0 1-1.06 0l-1.5-1.5a.75.75 0 0 1 1.06-1.06l.97.97 2.97-2.97a.75.75 0 0 1 1.06 1.06z" fill="#C41E3A"/>
+          </svg>
+          Inscription simple et guidée — Conseillers basés à Dakar
+        </p>
+      </div>
+
+      <!-- Right column — Photo Humanisée + Badge interactif -->
+      <div class="fw-hero__visual-wrap fw-reveal">
+        <!-- Main Photo: Team in Dakar reviewing files -->
+        <div class="fw-hero__photo-card">
+          <img src="assets/images/kapit/hero-expertise.jpg" alt="Équipe d'experts financiers FINAWA Dakar" class="fw-hero__photo" />
+          <div class="fw-hero__photo-badge">
+            <span class="fw-dot fw-dot--active"></span>
+            <span>Comité d'analyse financière en séance · Dakar</span>
+          </div>
+        </div>
+
+        <!-- Floating overlay card: Mon Projet (Light SaaS Card) -->
+        <div class="fw-dashboard-card fw-dashboard-card--overlay">
+          <div class="fw-dashboard-card__header">
+            <img src="assets/images/kapit/team-dakar.jpg" alt="Conseillère" class="fw-advisor-avatar" />
+            <div>
+              <div class="fw-dashboard-card__name">Projet Agro-Industrie <span class="fw-tag fw-tag--demo">Démo</span></div>
+              <div class="fw-dashboard-card__sub">Conseiller attitré : F. K. Diop</div>
+            </div>
+            <div class="fw-dashboard-card__status">
+              <span class="fw-dot fw-dot--active"></span> En cours
+            </div>
+          </div>
+
+          <div class="fw-dashboard-card__meta">
+            <div class="fw-meta-item">
+              <span class="fw-meta-item__label">Besoin recherché</span>
+              <span class="fw-meta-item__value">75 000 000 FCFA</span>
+            </div>
+            <div class="fw-meta-item">
+              <span class="fw-meta-item__label">Progression</span>
+              <span class="fw-meta-item__value fw-meta-item__value--accent">{{ mockProgress }}% complété</span>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="fw-progress-bar">
+            <div class="fw-progress-bar__fill" [style.width.%]="mockProgress"></div>
+          </div>
+
+          <!-- Bottom reassurance pill -->
+          <div class="fw-overlay-card__footer">
+            <span class="fw-pill-mini">🔒 Données sécurisées</span>
+            <span class="fw-pill-mini">🏛️ 2 partenaires ciblés</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 3 — BANDEAU 3 PILIERS (FOND CLAIR)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-pillars">
+    <div class="fw-container">
+      <div class="fw-pillars__grid">
+        <div *ngFor="let p of pillars; let i = index" class="fw-pillar fw-reveal" [style.--delay]="i * 0.1 + 's'">
+          <div class="fw-pillar__icon">
+            <svg *ngIf="i===0" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"/>
+              <path d="M12 6.5c-3.033 0-5.5 2.467-5.5 5.5 0 1.38.508 2.64 1.341 3.605L9.275 14.17A3.49 3.49 0 0 1 8.5 12c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5c0 .784-.259 1.507-.689 2.09l1.434 1.434A5.475 5.475 0 0 0 17.5 12c0-3.033-2.467-5.5-5.5-5.5z" fill="currentColor" opacity=".4"/>
+            </svg>
+            <svg *ngIf="i===1" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/>
+            </svg>
+            <svg *ngIf="i===2" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5v-1c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5v1H8zm9.65-4.28C16.36 14.38 14.29 15 12 15s-4.36-.62-5.65-1.78C5.48 12.38 5 11.24 5 10c0-3.87 3.13-7 7-7s7 3.13 7 7c0 1.24-.48 2.38-1.35 3.22z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="fw-pillar__content">
+            <h3>{{ p.title }}</h3>
+            <p>{{ p.desc }}</p>
+          </div>
+          <div *ngIf="i < pillars.length - 1" class="fw-pillar__sep"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 4 — PROBLÈMES RÉSOLUS (FOND CLAIR)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-problems" id="solutions">
+    <div class="fw-container">
+      <div class="fw-section-header fw-reveal">
+        <span class="fw-section-eyebrow">Le constat</span>
+        <h2>Trouver un financement ne devrait pas<br>être un parcours complexe.</h2>
+        <p>FINAWA simplifie chaque étape, de la préparation du dossier à la mise en relation.</p>
+      </div>
+
+      <div class="fw-problems__grid">
+        <div *ngFor="let prob of problems; let i = index"
+          class="fw-problem-card fw-reveal"
+          [style.--delay]="i * 0.15 + 's'">
+          <div class="fw-problem-card__icon" [style.background]="prob.color + '15'" [style.color]="prob.color">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <ng-container *ngIf="i===0">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </ng-container>
+              <ng-container *ngIf="i===1">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+              </ng-container>
+              <ng-container *ngIf="i===2">
+                <path d="M11 5.08V2c-5 .5-9 4.81-9 10s4 9.5 9 10v-3.08c-3-.48-6-3.4-6-6.92s3-6.44 6-6.92zM18.97 11H22c-.47-5-4-8.53-9-9v3.08C16 5.51 18.54 8 18.97 11zM13 18.92V22c5-.47 8.53-4 9-9h-3.03c-.43 3-2.97 5.49-5.97 5.92z"/>
+              </ng-container>
+            </svg>
+          </div>
+          <h3 class="fw-problem-card__title">{{ prob.title }}</h3>
+          <p class="fw-problem-card__desc">{{ prob.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 5 — COMMENT ÇA MARCHE (FOND BLANC)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-steps" id="comment">
+    <div class="fw-container">
+      <div class="fw-section-header fw-reveal">
+        <span class="fw-section-eyebrow">Le parcours</span>
+        <h2>De votre projet à votre<br>recherche de financement.</h2>
+        <p>Un processus simple, guidé et entièrement numérique.</p>
+      </div>
+
+      <div class="fw-steps__grid">
+        <div *ngFor="let step of steps; let i = index"
+          class="fw-step fw-reveal"
+          [style.--delay]="i * 0.12 + 's'">
+          <div class="fw-step__num">{{ step.number }}</div>
+          <div class="fw-step__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <ng-container *ngIf="i===0">
+                <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zM5 13v-3h3V8H5V5H3v3H0v2h3v3h2z"/>
+              </ng-container>
+              <ng-container *ngIf="i===1">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </ng-container>
+              <ng-container *ngIf="i===2">
+                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/>
+              </ng-container>
+              <ng-container *ngIf="i===3">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+              </ng-container>
+            </svg>
+          </div>
+          <h3 class="fw-step__title">{{ step.title }}</h3>
+          <p class="fw-step__desc">{{ step.desc }}</p>
+        </div>
+      </div>
+
+      <div class="fw-steps__cta fw-reveal">
+        <a routerLink="/auth/register" class="fw-btn fw-btn--primary fw-btn--lg">
+          Démarrer mon projet
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 6 — SOLUTIONS PAR PROFIL (CARTES FONDS CLAIRS)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-solutions" id="partenaires">
+    <div class="fw-container">
+      <div class="fw-section-header fw-reveal">
+        <span class="fw-section-eyebrow">Nos solutions</span>
+        <h2>Une plateforme pensée<br>pour chaque acteur du financement.</h2>
+        <p>Un accompagnement adapté et des outils sur-mesure pour chaque profil.</p>
+      </div>
+
+      <div class="fw-solutions__grid">
+
+        <!-- Card 1: Entrepreneurs (Photo intégrée) -->
+        <div class="fw-solution-card fw-reveal">
+          <div class="fw-solution-card__image-wrap">
+            <img src="assets/images/kapit/service-accompagnement.jpg" alt="Entrepreneurs et dirigeants" class="fw-solution-card__img" />
+          </div>
+
+          <div class="fw-solution-card__body">
+            <div class="fw-solution-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 6h-2.18c.07-.44.18-.88.18-1.35C18 2.53 15.88.66 13.31.66c-1.3 0-2.49.59-3.29 1.52L9 3.45 7.98 2.18C7.18 1.25 6 .66 4.69.66 2.12.66 0 2.53 0 4.65c0 .47.09.91.18 1.35H0v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/>
+              </svg>
+            </div>
+
+            <h3 class="fw-solution-card__title">Entrepreneurs & PME</h3>
+            <p class="fw-solution-card__sub">Porteurs de projets et dirigeants</p>
+
+            <ul class="fw-solution-card__features">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Présenter un projet et un besoin de financement
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Préparer et structurer une demande complète
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Découvrir des opportunités de financement adaptées
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Suivre les démarches et les échanges en temps réel
+              </li>
+            </ul>
+
+            <a routerLink="/auth/register" class="fw-btn fw-btn--outline-dark fw-btn--lg">
+              Trouver un financement
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: Banques & Institutions (FOND CLAIR MISE EN AVANT) -->
+        <div class="fw-solution-card fw-solution-card--highlight fw-reveal" [style.--delay]="'0.15s'">
+          <div class="fw-solution-card__badge">Partenaires Financiers</div>
+
+          <div class="fw-solution-card__body">
+            <div class="fw-solution-card__icon fw-solution-card__icon--red">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.34 8-7 8-11.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-4h-2c0-3.25 3-3 3-5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 2.75-3 5z"/>
+              </svg>
+            </div>
+
+            <h3 class="fw-solution-card__title">Banques & Institutions</h3>
+            <p class="fw-solution-card__sub">Banques, SFD & Fonds d'investissement</p>
+
+            <ul class="fw-solution-card__features">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Accéder à des dossiers préqualifiés et structurés
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Faciliter et accélérer les échanges avec les entreprises
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Identifier des projets selon vos critères d'intervention
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#B91C1C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Tableau de bord de suivi d'instruction dédié
+              </li>
+            </ul>
+
+            <a routerLink="/auth/register" class="fw-btn fw-btn--primary fw-btn--lg">
+              Découvrir les solutions partenaires
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Analystes & Experts (Photo intégrée) -->
+        <div class="fw-solution-card fw-reveal" [style.--delay]="'0.3s'">
+          <div class="fw-solution-card__image-wrap">
+            <img src="assets/images/kapit/team-dakar.jpg" alt="Analystes et consultants FINAWA" class="fw-solution-card__img" />
+          </div>
+
+          <div class="fw-solution-card__body">
+            <div class="fw-solution-card__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+              </svg>
+            </div>
+
+            <h3 class="fw-solution-card__title">Analystes & Experts</h3>
+            <p class="fw-solution-card__sub">Consultants financiers & juristes</p>
+
+            <ul class="fw-solution-card__features">
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Accompagner la structuration des dossiers clients
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Contribuer à l'analyse financière et à la conformité
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Faciliter la préparation technique des projets
+              </li>
+              <li>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#C41E3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Réseau régional d'experts certifiés
+              </li>
+            </ul>
+
+            <a routerLink="/auth/register" class="fw-btn fw-btn--outline-dark fw-btn--lg">
+              Rejoindre l'écosystème
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 7 — APERÇU PRODUIT (INTERFACE SAAS CLAIRE)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-product">
+    <div class="fw-container">
+      <div class="fw-section-header fw-reveal">
+        <span class="fw-section-eyebrow">Le produit</span>
+        <h2>Une interface qui inspire<br>confiance et clarté.</h2>
+        <p>
+          Chaque fonctionnalité est pensée pour simplifier votre démarche de financement,
+          de la première information jusqu'à la mise en relation avec vos interlocuteurs.
+        </p>
+      </div>
+
+      <div class="fw-product__screen fw-reveal">
+        <!-- Browser chrome (Light Theme) -->
+        <div class="fw-browser">
+          <div class="fw-browser__bar">
+            <span class="fw-browser__dot" style="background:#FF5F57"></span>
+            <span class="fw-browser__dot" style="background:#FEBC2E"></span>
+            <span class="fw-browser__dot" style="background:#28C840"></span>
+            <div class="fw-browser__url">app.finawa.sn/dashboard <span class="fw-tag fw-tag--demo">Démo</span></div>
+          </div>
+          <div class="fw-browser__content">
+            <!-- Sidebar -->
+            <nav class="fw-db-sidebar">
+              <div class="fw-db-sidebar__logo">FW</div>
+              <ul>
+                <li class="active">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                  <span>Tableau de bord</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                  <span>Mon dossier</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                  <span>Opportunités</span>
+                </li>
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                  <span>Messages</span>
+                </li>
+              </ul>
+            </nav>
+
+            <!-- Main content -->
+            <div class="fw-db-main">
+              <div class="fw-db-header">
+                <div>
+                  <h4>Bonjour, Sadio 👋</h4>
+                  <p>Votre dossier de financement est en cours de structuration.</p>
+                </div>
+                <div class="fw-db-notif">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                  <span class="fw-db-notif__badge">2</span>
+                </div>
+              </div>
+
+              <div class="fw-db-cards">
+                <div class="fw-db-card fw-db-card--red">
+                  <div class="fw-db-card__label">Progression du dossier</div>
+                  <div class="fw-db-card__value">{{ mockProgress }}%</div>
+                  <div class="fw-db-card__bar">
+                    <div [style.width.%]="mockProgress"></div>
+                  </div>
+                </div>
+                <div class="fw-db-card fw-db-card--emerald">
+                  <div class="fw-db-card__label">Opportunités identifiées</div>
+                  <div class="fw-db-card__value">5</div>
+                  <div class="fw-db-card__hint">Partenaires correspondants</div>
+                </div>
+                <div class="fw-db-card fw-db-card--light">
+                  <div class="fw-db-card__label">Statut du dossier</div>
+                  <div class="fw-db-card__value fw-db-card__value--sm">En préparation</div>
+                  <div class="fw-db-card__hint">Étape 3 sur 5</div>
+                </div>
+              </div>
+
+              <div class="fw-db-checklist">
+                <div class="fw-db-checklist__title">Prochaines étapes</div>
+                <div *ngFor="let s of mockSteps" class="fw-db-step" [class.fw-db-step--done]="s.done">
+                  <span class="fw-db-step__check">
+                    <svg *ngIf="s.done" width="10" height="10" viewBox="0 0 12 12" fill="none">
+                      <path d="M10 3L5 8.5 2 5.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span>{{ s.label }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 8 — ÉCOSYSTÈME AFRICAIN (FOND CLAIR & CONSEILLERS)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-ecosystem">
+    <div class="fw-container fw-ecosystem__inner">
+
+      <div class="fw-ecosystem__text fw-reveal">
+        <span class="fw-section-eyebrow">L'écosystème</span>
+        <h2>Connecter les ambitions<br>aux opportunités.</h2>
+        <p>
+          FINAWA a pour ambition de fluidifier les échanges entre les porteurs de projets
+          et les acteurs du financement en Afrique de l'Ouest, en simplifiant chaque
+          étape de la mise en relation financière.
+        </p>
+
+        <!-- Advisor Spotlight Card -->
+        <div class="fw-advisor-card">
+          <img src="assets/images/kapit/team-dakar.jpg" alt="Fatou Kiné Diop" class="fw-advisor-card__photo" />
+          <div class="fw-advisor-card__content">
+            <p class="fw-advisor-card__quote">
+              « Notre rôle est d'accompagner chaque dirigeant à formaliser et crédibiliser sa demande pour ouvrir les portes du financement. »
+            </p>
+            <div class="fw-advisor-card__author">
+              <strong>Fatou K. Diop</strong>
+              <span>Pôle Structuration & Analyse · Dakar</span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="fw-ecosystem__list">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#B91C1C"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Entrepreneurs, TPE et PME africaines
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#B91C1C"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Banques et institutions de microfinance
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#B91C1C"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Investisseurs et fonds de développement
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#B91C1C"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            Analystes financiers et experts d'accompagnement
+          </li>
+        </ul>
+
+        <a routerLink="/auth/register" class="fw-btn fw-btn--primary fw-btn--lg">
+          Rejoindre l'écosystème
+        </a>
+      </div>
+
+      <!-- SVG network visual (FOND CLAIR) -->
+      <div class="fw-ecosystem__visual fw-reveal">
+        <svg class="fw-network-svg" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Connection lines -->
+          <line x1="210" y1="190" x2="100" y2="90" stroke="rgba(185,28,28,0.25)" stroke-width="2" stroke-dasharray="5,4"/>
+          <line x1="210" y1="190" x2="320" y2="90" stroke="rgba(185,28,28,0.25)" stroke-width="2" stroke-dasharray="5,4"/>
+          <line x1="210" y1="190" x2="90" y2="290" stroke="rgba(185,28,28,0.25)" stroke-width="2" stroke-dasharray="5,4"/>
+          <line x1="210" y1="190" x2="330" y2="290" stroke="rgba(185,28,28,0.25)" stroke-width="2" stroke-dasharray="5,4"/>
+          <line x1="100" y1="90" x2="320" y2="90" stroke="rgba(148,163,184,0.3)" stroke-width="1.5" stroke-dasharray="4,5"/>
+          <line x1="90" y1="290" x2="330" y2="290" stroke="rgba(148,163,184,0.3)" stroke-width="1.5" stroke-dasharray="4,5"/>
+
+          <!-- Center node — FINAWA -->
+          <circle cx="210" cy="190" r="50" fill="#B91C1C" fill-opacity="0.1" stroke="#B91C1C" stroke-width="1.5"/>
+          <circle cx="210" cy="190" r="36" fill="#B91C1C"/>
+          <text x="210" y="186" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter,sans-serif">FINAWA</text>
+          <text x="210" y="200" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="8" font-family="Inter,sans-serif">Plateforme</text>
+
+          <!-- Node 1 — Entrepreneurs -->
+          <circle cx="100" cy="90" r="32" fill="white" stroke="#B91C1C" stroke-width="2"/>
+          <text x="100" y="86" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">Entrepre-</text>
+          <text x="100" y="99" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">neurs</text>
+
+          <!-- Node 2 — Banques -->
+          <circle cx="320" cy="90" r="32" fill="white" stroke="#B91C1C" stroke-width="2"/>
+          <text x="320" y="86" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">Banques &amp;</text>
+          <text x="320" y="99" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">IMF</text>
+
+          <!-- Node 3 — Investisseurs -->
+          <circle cx="90" cy="290" r="32" fill="white" stroke="#8B1227" stroke-width="2"/>
+          <text x="90" y="286" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">Investis-</text>
+          <text x="90" y="299" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">seurs</text>
+
+          <!-- Node 4 — Experts -->
+          <circle cx="330" cy="290" r="32" fill="white" stroke="#680F1F" stroke-width="2"/>
+          <text x="330" y="286" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">Analystes</text>
+          <text x="330" y="299" text-anchor="middle" fill="#0F172A" font-size="9" font-weight="700" font-family="Inter,sans-serif">&amp; Experts</text>
+
+          <!-- Animated dots on lines -->
+          <circle r="4" fill="#B91C1C">
+            <animateMotion dur="3s" repeatCount="indefinite">
+              <mpath href="#path1"/>
+            </animateMotion>
+          </circle>
+          <path id="path1" d="M210,190 L100,90" stroke="none"/>
+
+          <circle r="4" fill="#8B1227">
+            <animateMotion dur="3.5s" repeatCount="indefinite" begin="1s">
+              <mpath href="#path2"/>
+            </animateMotion>
+          </circle>
+          <path id="path2" d="M90,290 L210,190" stroke="none"/>
+        </svg>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 9 — FAQ ACCORDÉON (FOND CLAIR)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-faq" id="faq">
+    <div class="fw-container fw-faq__inner">
+      <div class="fw-section-header fw-reveal">
+        <span class="fw-section-eyebrow">Questions fréquentes</span>
+        <h2>Vous avez des questions ?</h2>
+        <p>Retrouvez ici les réponses aux questions les plus posées sur FINAWA.</p>
+      </div>
+
+      <div class="fw-faq__list fw-reveal">
+        <div *ngFor="let item of faqItems; let i = index"
+          class="fw-faq-item"
+          [class.fw-faq-item--open]="activeFaqIndex === i">
+          <button class="fw-faq-item__question" (click)="toggleFaq(i)">
+            <span>{{ item.question }}</span>
+            <span class="fw-faq-item__chevron">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="fw-faq-item__answer">
+            <p>{{ item.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 10 — CTA FINAL (FOND CLAIR ÉLÉGANT AVEC BORDURE ROUGE)
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="fw-cta-final">
+    <div class="fw-container fw-cta-final__inner fw-reveal">
+      <div class="fw-cta-final__content">
+        <span class="fw-section-eyebrow">Prêt à commencer ?</span>
+        <h2>Votre prochaine étape<br>commence avec FINAWA.</h2>
+        <p>
+          Présentez votre projet, structurez votre besoin et explorez les possibilités
+          de financement adaptées à vos ambitions avec nos conseillers.
+        </p>
+        <div class="fw-cta-final__btns">
+          <a routerLink="/auth/register" class="fw-btn fw-btn--primary fw-btn--lg">
+            Commencer mon projet
+          </a>
+          <a routerLink="/auth/log-in" class="fw-btn fw-btn--outline fw-btn--lg">
+            Se connecter
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SECTION 11 — FOOTER (FOND CLAIR MODERNE)
+  ═══════════════════════════════════════════════════════════ -->
+  <footer class="fw-footer">
+    <div class="fw-container fw-footer__inner">
+
+      <div class="fw-footer__brand">
+        <div class="fw-nav__brand">
+          <div class="fw-nav__brand-mark fw-nav__brand-mark--sm">F</div>
+          <div class="fw-nav__brand-text">
+            <strong>FINAWA</strong>
+            <span>Intermédiation Financière</span>
+          </div>
+        </div>
+        <p class="fw-footer__desc">
+          FINAWA est une plateforme numérique qui facilite la mise en relation entre
+          les entrepreneurs africains et les acteurs du financement.
+        </p>
+        <div class="fw-footer__contact">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Dakar, Sénégal — Almadies
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            contact&#64;finawa.sn
+          </span>
+        </div>
+      </div>
+
+      <div class="fw-footer__col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#solutions">Pour les entrepreneurs</a></li>
+          <li><a href="#partenaires">Pour les banques</a></li>
+          <li><a href="#partenaires">Pour les analystes</a></li>
+          <li><a href="#comment">Comment ça marche ?</a></li>
+        </ul>
+      </div>
+
+      <div class="fw-footer__col">
+        <h4>Partenaires</h4>
+        <ul>
+          <li><a routerLink="/auth/register">Rejoindre l'écosystème</a></li>
+          <li><a routerLink="/auth/register">Déposer un dossier</a></li>
+          <li><a routerLink="/auth/log-in">Espace partenaire</a></li>
+        </ul>
+      </div>
+
+      <div class="fw-footer__col">
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="#">À propos de FINAWA</a></li>
+          <li><a href="#">Conditions d'utilisation</a></li>
+          <li><a href="#">Politique de confidentialité</a></li>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="fw-footer__bottom">
+      <div class="fw-container fw-footer__bottom-inner">
+        <p>© 2025 FINAWA — Tous droits réservés.</p>
+        <p>Plateforme d'intermédiation financière — Dakar, Sénégal</p>
+      </div>
+    </div>
+  </footer>
+
+</main>

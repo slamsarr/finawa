@@ -1,0 +1,309 @@
+<div class="public-page">
+  <nav class="public-nav" [class.scrolled]="navScrolled">
+    <div class="container nav-inner">
+      <a routerLink="/" class="brand" (click)="closeMobileMenu()">
+        <img src="assets/images/logo.png" alt="FINAWA" />
+        <span>FINAWA<span>.</span></span>
+      </a>
+
+      <div class="nav-links d-none d-xl-flex">
+        @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active">{{ item.label }}</a>
+        }
+      </div>
+
+      <div class="nav-actions">
+        <button type="button" class="theme-btn" (click)="toggleTheme()" aria-label="Changer de thème">
+          <i [class]="(themeService.theme$ | async) === 'dark' ? 'fas fa-sun' : 'fas fa-moon'"></i>
+        </button>
+        @if (isLoggedIn$ | async) {
+        <a [routerLink]="dashboardUrl$ | async" class="btn-solid d-none d-sm-inline-flex">Mon espace</a>
+        } @else {
+        <a routerLink="/auth/log-in" class="btn-ghost d-none d-md-inline-flex">Connexion</a>
+        <a routerLink="/auth/register" class="btn-solid d-none d-sm-inline-flex">Créer un dossier</a>
+        }
+        <button type="button" class="menu-btn d-xl-none" (click)="toggleMobileMenu()" [attr.aria-expanded]="mobileMenuOpen" aria-label="Menu principal">
+          <i [class]="mobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+        </button>
+      </div>
+    </div>
+
+    @if (mobileMenuOpen) {
+    <div class="mobile-drawer">
+      <div class="container">
+        @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" (click)="closeMobileMenu()">{{ item.label }}</a>
+        }
+        <div class="mobile-auth">
+          @if (isLoggedIn$ | async) {
+          <a [routerLink]="dashboardUrl$ | async" class="btn-solid" (click)="closeMobileMenu()">Mon espace</a>
+          } @else {
+          <a routerLink="/auth/log-in" class="btn-ghost" (click)="closeMobileMenu()">Connexion</a>
+          <a routerLink="/auth/register" class="btn-solid" (click)="closeMobileMenu()">Créer un dossier</a>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </nav>
+
+  <header class="page-hero">
+    <div class="hero-atmosphere" aria-hidden="true">
+      <span class="orb orb-a"></span>
+      <span class="orb orb-b"></span>
+      <span class="mesh"></span>
+    </div>
+    <div class="container">
+      <a routerLink="/" class="back-link"><i class="fas fa-arrow-left"></i> Accueil</a>
+      <p class="page-brand">FINAWA<span>.</span></p>
+      <span class="eyebrow">{{ meta.eyebrow }}</span>
+      <h1>{{ meta.title }}</h1>
+      <p>{{ meta.intro }}</p>
+    </div>
+  </header>
+
+  <main>
+    @if (page === 'vision') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="split-grid">
+          <article class="statement-panel" style="--i: 0">
+            <span>Problème</span>
+            <h2>Des démarches dispersées et des dossiers souvent incomplets.</h2>
+            <p>
+              Les entrepreneurs ne savent pas toujours quel financeur contacter, quels documents préparer ni comment
+              présenter un besoin de financement crédible.
+            </p>
+          </article>
+          <article class="statement-panel positive" style="--i: 1">
+            <span>Réponse FINAWA</span>
+            <h2>Un parcours unique pour préparer, qualifier et orienter.</h2>
+            <p>
+              FINAWA centralise le profil entreprise, les documents, la préqualification et la mise en relation avec
+              les acteurs réellement adaptés.
+            </p>
+          </article>
+        </div>
+
+        <div class="section-title-row">
+          <h2>Objectifs stratégiques</h2>
+          <p>Les cinq piliers qui structurent toute l’expérience utilisateur.</p>
+        </div>
+
+        <div class="objective-grid">
+          @for (objective of objectives; track objective.title; let i = $index) {
+          <article [style.--i]="i">
+            <i [class]="objective.icon"></i>
+            <h3>{{ objective.title }}</h3>
+            <p>{{ objective.desc }}</p>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'orientation') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="tool-layout">
+          <form class="orientation-panel">
+            <label>Stade de l’entreprise</label>
+            <div class="segmented">
+              @for (stage of ['porteur', 'startup', 'tpe', 'pme', 'grande']; track stage) {
+              <button type="button" [class.active]="simulatorStage === stage" (click)="setSimulatorStage(stage)">
+                {{ stage }}
+              </button>
+              }
+            </div>
+
+            <label>Besoin principal</label>
+            <div class="segmented two">
+              <button type="button" [class.active]="simulatorNeed === 'financement'" (click)="setSimulatorNeed('financement')">Financement</button>
+              <button type="button" [class.active]="simulatorNeed === 'formalisation'" (click)="setSimulatorNeed('formalisation')">Formalisation</button>
+              <button type="button" [class.active]="simulatorNeed === 'structuration'" (click)="setSimulatorNeed('structuration')">Structuration</button>
+              <button type="button" [class.active]="simulatorNeed === 'investissement'" (click)="setSimulatorNeed('investissement')">Investissement</button>
+            </div>
+
+            <label>Montant recherché</label>
+            <input type="range" min="1000000" max="150000000" step="1000000" [(ngModel)]="simulatorAmount" (ngModelChange)="onAmountChange()" name="amount" />
+            <strong class="amount-value">{{ formatCurrency(simulatorAmount) }}</strong>
+
+            <label>Budget d’accompagnement</label>
+            <select [(ngModel)]="simulatorBudget" (ngModelChange)="setSimulatorBudget($event)" name="budget">
+              <option value="zero">Budget nul</option>
+              <option value="avec_budget">Budget disponible</option>
+            </select>
+          </form>
+
+          <aside class="result-panel" [class.pulse]="resultPulse">
+            <span>Orientation recommandée</span>
+            <h2>{{ simulationResult.label }}</h2>
+            <p>{{ simulationResult.desc }}</p>
+            <div class="chip-list">
+              @for (partner of simulationResult.partners; track partner) {
+              <span>{{ partner }}</span>
+              }
+            </div>
+            <a routerLink="/auth/register" class="btn-solid">Créer mon dossier</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'ecosysteme') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="actor-grid">
+          @for (actor of actors; track actor.group; let i = $index) {
+          <article [style.--i]="i">
+            <h2>{{ actor.group }}</h2>
+            <ul>
+              @for (item of actor.items; track item) {
+              <li>{{ item }}</li>
+              }
+            </ul>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'fonctionnalites') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="feature-grid">
+          @for (feature of featureCards; track feature.title; let i = $index) {
+          <article [style.--i]="i">
+            <i [class]="feature.icon"></i>
+            <h2>{{ feature.title }}</h2>
+            <p>{{ feature.desc }}</p>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'parcours') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="timeline-grid">
+          @for (step of steps; track step[0]; let i = $index) {
+          <article [style.--i]="i">
+            <span>{{ step[0] }}</span>
+            <h2>{{ step[1] }}</h2>
+            <p>{{ step[2] }}</p>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'offres') {
+    <section class="content-band" data-reveal>
+      <div class="container">
+        <div class="plan-grid">
+          @for (plan of plans; track plan.name; let i = $index) {
+          <article [class.featured]="plan.name === 'Premium'" [style.--i]="i">
+            <span>{{ plan.target }}</span>
+            <h2>{{ plan.name }}</h2>
+            <strong>{{ plan.price }}</strong>
+            <ul>
+              @for (feature of plan.features; track feature) {
+              <li><i class="fas fa-check"></i>{{ feature }}</li>
+              }
+            </ul>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+
+    @if (page === 'faq') {
+    <section class="content-band" data-reveal>
+      <div class="container narrow">
+        <div class="faq-filter">
+          <button type="button" [class.active]="activeFaqCategory === 'all'" (click)="activeFaqCategory = 'all'">Toutes</button>
+          <button type="button" [class.active]="activeFaqCategory === 'entrepreneurs'" (click)="activeFaqCategory = 'entrepreneurs'">Entrepreneurs</button>
+          <button type="button" [class.active]="activeFaqCategory === 'financeurs'" (click)="activeFaqCategory = 'financeurs'">Financeurs</button>
+          <button type="button" [class.active]="activeFaqCategory === 'general'" (click)="activeFaqCategory = 'general'">Général</button>
+        </div>
+
+        @for (item of filteredFaq; track item.question) {
+        <article class="faq-item" [class.open]="item.open">
+          <button type="button" (click)="toggleFaq(item)" [attr.aria-expanded]="item.open">
+            <span>{{ item.question }}</span>
+            <i [class]="item.open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+          </button>
+          @if (item.open) {
+          <p class="faq-answer">{{ item.answer }}</p>
+          }
+        </article>
+        }
+      </div>
+    </section>
+    }
+
+    @if (page === 'roadmap') {
+    <section class="content-band" data-reveal>
+      <div class="container narrow">
+        <div class="roadmap-list">
+          @for (phase of roadmap; track phase[0]; let i = $index) {
+          <article [style.--i]="i">
+            <span>{{ phase[0] }}</span>
+            <h2>{{ phase[1] }}</h2>
+            <p>{{ phase[2] }}</p>
+          </article>
+          }
+        </div>
+      </div>
+    </section>
+    }
+  </main>
+
+  <section class="public-cta">
+    <div class="container">
+      @if (isLoggedIn$ | async) {
+      <div>
+        <span>Continuer</span>
+        <h2>Reprenez votre dossier depuis votre espace FINAWA.</h2>
+      </div>
+      <a [routerLink]="dashboardUrl$ | async" class="btn-solid">Mon espace</a>
+      } @else {
+      <div>
+        <span>Prêt à continuer ?</span>
+        <h2>Créez votre profil et commencez votre dossier FINAWA.</h2>
+      </div>
+      <div class="cta-actions">
+        <a routerLink="/auth/register" class="btn-solid">Créer un dossier gratuit</a>
+        <a routerLink="/orientation" class="btn-ghost">Vérifier mon orientation</a>
+      </div>
+      }
+    </div>
+  </section>
+
+  <footer class="public-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>FINAWA<span>.</span></strong>
+        <p>Plateforme financière intégrée de financement, d’accompagnement et d’intermédiation.</p>
+      </div>
+      <div>
+        <a routerLink="/vision">Vision</a>
+        <a routerLink="/fonctionnalites">Fonctionnalités</a>
+        <a routerLink="/parcours">Parcours</a>
+        <a routerLink="/roadmap">Roadmap</a>
+      </div>
+      <div>
+        <a routerLink="/auth/register">Créer un compte</a>
+        <a routerLink="/auth/log-in">Connexion</a>
+        <a routerLink="/faq">FAQ</a>
+      </div>
+    </div>
+  </footer>
+</div>

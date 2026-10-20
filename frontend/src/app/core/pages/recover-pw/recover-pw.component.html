@@ -1,0 +1,236 @@
+<div class="recover-page-wrapper">
+  <div class="auth-atmosphere" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="mesh"></span>
+  </div>
+
+  <!-- Floating Theme Switcher -->
+  <button
+    type="button"
+    class="theme-floating-btn"
+    (click)="toggleTheme()"
+    [title]="(themeService.theme$ | async) === 'dark' ? 'Mode Clair' : 'Mode Sombre'"
+    aria-label="Changer de thème"
+  >
+    <i [class]="(themeService.theme$ | async) === 'dark' ? 'fas fa-sun text-warning' : 'fas fa-moon'"></i>
+  </button>
+
+  <div class="recover-container">
+    <div class="recover-card">
+      
+      <!-- Card Header -->
+      <div class="recover-card-header text-center">
+        <a routerLink="/" class="recover-brand d-inline-flex align-items-center gap-2 mb-3 text-decoration-none">
+          <img src="assets/images/logo.png" alt="FINAWA" class="recover-logo" />
+          <strong class="recover-wordmark">FINAWA<span>.</span></strong>
+        </a>
+        <span class="recover-eyebrow">Sécurité du compte</span>
+        <h3 class="recover-title">
+          {{ isResetMode ? 'Nouveau mot de passe' : 'Mot de passe oublié ?' }}
+        </h3>
+        <p class="recover-subtitle mb-0">
+          {{ isResetMode ? "Définissez un nouveau mot de passe pour protéger l'accès à votre espace FINAWA." : "Indiquez l'email associé à votre profil entreprise pour recevoir un lien sécurisé." }}
+        </p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="recover-card-body">
+        
+        <!-- ========================================== -->
+        <!-- MODE 1 : DEMANDE DE RÉINITIALISATION (EMAIL) -->
+        <!-- ========================================== -->
+        @if (!isResetMode) {
+          @if (requestSent) {
+            <div class="status-feedback-box text-center py-3 animate__animated animate__fadeIn">
+              <div class="feedback-icon-circle success mx-auto mb-3">
+                <i class="fas fa-paper-plane"></i>
+              </div>
+              <h5 class="feedback-title text-success mb-2">Email envoyé !</h5>
+              <p class="feedback-desc text-slate-500 text-sm mb-4">
+                Si un compte correspond à cette adresse, vous recevrez dans un instant un lien valable 1 heure pour réinitialiser votre mot de passe.
+              </p>
+              <div class="d-flex flex-column gap-2">
+                <button type="button" class="btn-recover-outline w-100" (click)="requestSent = false">
+                  Renvoyer à une autre adresse
+                </button>
+                <a routerLink="/auth/log-in" class="btn-recover-primary w-100 text-decoration-none">
+                  <i class="fas fa-arrow-left me-2"></i>Retour à la connexion
+                </a>
+              </div>
+            </div>
+          } @else {
+            @if (requestError) {
+              <div class="auth-alert-error mb-4 animate__animated animate__shakeX">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fas fa-exclamation-triangle text-danger fs-5"></i>
+                  <span class="text-xs text-danger-emphasis">{{ requestError }}</span>
+                </div>
+              </div>
+            }
+
+            <form [formGroup]="requestForm" (ngSubmit)="onRequestSubmit()" class="recover-form">
+              <div class="form-group mb-4">
+                <label class="form-label-custom">Adresse Email Professionnelle <span class="text-crimson">*</span></label>
+                <div class="input-wrapper">
+                  <i class="fas fa-envelope input-icon"></i>
+                  <input
+                    type="email"
+                    class="form-control-custom"
+                    placeholder="nom@entreprise.com"
+                    formControlName="email"
+                    [class.is-invalid]="requestForm.get('email')?.touched && requestForm.get('email')?.invalid"
+                  />
+                </div>
+                @if (requestForm.get('email')?.touched && requestForm.get('email')?.invalid) {
+                  <div class="field-error-msg">Veuillez saisir une adresse email valide.</div>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="btn-recover-primary w-100"
+                [disabled]="submittingRequest || requestForm.invalid"
+              >
+                @if (submittingRequest) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <span>Envoi du lien en cours...</span>
+                } @else {
+                  <i class="fas fa-paper-plane me-2"></i>
+                  <span>Envoyer le lien de réinitialisation</span>
+                }
+              </button>
+            </form>
+
+            <div class="recover-card-footer text-center mt-4 pt-3 border-top">
+              <p class="text-sm text-slate-500 mb-0">
+                Vous vous souvenez de vos identifiants ?
+                <a routerLink="/auth/log-in" class="text-crimson fw-bold text-decoration-none ms-1">
+                  Se connecter
+                </a>
+              </p>
+            </div>
+          }
+        }
+
+        <!-- ================================================= -->
+        <!-- MODE 2 : DÉFINITION DU NOUVEAU MOT DE PASSE (TOKEN) -->
+        <!-- ================================================= -->
+        @if (isResetMode) {
+          @if (resetSuccess) {
+            <div class="status-feedback-box text-center py-3 animate__animated animate__fadeIn">
+              <div class="feedback-icon-circle success mx-auto mb-3">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h5 class="feedback-title text-success mb-2">Mot de passe réinitialisé !</h5>
+              <p class="feedback-desc text-slate-500 text-sm mb-4">
+                Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter à votre espace en toute sécurité.
+              </p>
+              <a routerLink="/auth/log-in" class="btn-recover-primary w-100 text-decoration-none">
+                <i class="fas fa-sign-in-alt me-2"></i>Se connecter maintenant
+              </a>
+            </div>
+          } @else {
+            @if (resetError) {
+              <div class="auth-alert-error mb-4 animate__animated animate__shakeX">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fas fa-exclamation-triangle text-danger fs-5"></i>
+                  <span class="text-xs text-danger-emphasis">{{ resetError }}</span>
+                </div>
+              </div>
+            }
+
+            <form [formGroup]="resetForm" (ngSubmit)="onResetSubmit()" class="recover-form">
+              <!-- Nouveau mot de passe -->
+              <div class="form-group mb-3">
+                <label class="form-label-custom">Nouveau mot de passe <span class="text-crimson">*</span></label>
+                <div class="input-wrapper">
+                  <i class="fas fa-lock input-icon"></i>
+                  <input
+                    [type]="showNewPass ? 'text' : 'password'"
+                    class="form-control-custom pe-5"
+                    placeholder="Min. 8 caractères"
+                    formControlName="newPassword"
+                    [class.is-invalid]="resetForm.get('newPassword')?.touched && resetForm.get('newPassword')?.invalid"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle-btn"
+                    (click)="showNewPass = !showNewPass"
+                    aria-label="Afficher/Masquer le mot de passe"
+                  >
+                    <i [class]="showNewPass ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  </button>
+                </div>
+                @if (resetForm.get('newPassword')?.touched && resetForm.get('newPassword')?.invalid) {
+                  <div class="field-error-msg">Le mot de passe doit comporter au moins 8 caractères.</div>
+                }
+              </div>
+
+              <!-- Confirmation mot de passe -->
+              <div class="form-group mb-4">
+                <label class="form-label-custom">Confirmer le mot de passe <span class="text-crimson">*</span></label>
+                <div class="input-wrapper">
+                  <i class="fas fa-shield-alt input-icon"></i>
+                  <input
+                    [type]="showConfirmPass ? 'text' : 'password'"
+                    class="form-control-custom pe-5"
+                    placeholder="Retapez votre mot de passe"
+                    formControlName="confirmPassword"
+                    [class.is-invalid]="(resetForm.get('confirmPassword')?.touched && resetForm.get('confirmPassword')?.invalid) || (resetForm.get('confirmPassword')?.touched && resetForm.errors?.['passwordMismatch'])"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle-btn"
+                    (click)="showConfirmPass = !showConfirmPass"
+                    aria-label="Afficher/Masquer le mot de passe"
+                  >
+                    <i [class]="showConfirmPass ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                  </button>
+                </div>
+                @if (resetForm.get('confirmPassword')?.touched && resetForm.get('confirmPassword')?.errors?.['required']) {
+                  <div class="field-error-msg">La confirmation est obligatoire.</div>
+                } @else if (resetForm.get('confirmPassword')?.touched && resetForm.errors?.['passwordMismatch']) {
+                  <div class="field-error-msg">Les deux mots de passe ne correspondent pas.</div>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="btn-recover-primary w-100"
+                [disabled]="submittingReset || resetForm.invalid"
+              >
+                @if (submittingReset) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  <span>Mise à jour du mot de passe...</span>
+                } @else {
+                  <i class="fas fa-check-circle me-2"></i>
+                  <span>Enregistrer le nouveau mot de passe</span>
+                }
+              </button>
+            </form>
+
+            <div class="recover-card-footer text-center mt-4 pt-3 border-top">
+              <p class="text-sm text-slate-500 mb-0">
+                <a routerLink="/auth/log-in" class="text-crimson fw-bold text-decoration-none">
+                  <i class="fas fa-arrow-left me-1"></i>Retour à la connexion
+                </a>
+              </p>
+            </div>
+          }
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Footer Copyright -->
+    <div class="text-center mt-3 text-xs text-slate-400">
+      <a routerLink="/" class="auth-home-link">Retour à l’accueil</a>
+      <span class="mx-2">•</span>
+      FINAWA Platform &copy; 2026 &bull; Propulsé par Kapit Group
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,275 @@
+<div class="container-fluid">
+  <div class="row mb-3 align-items-center app-page-head">
+    <div class="col">
+      <h4 class="page-title mb-2">Profils &amp; Permissions</h4>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/">Accueil</a></li>
+          <li class="breadcrumb-item">Administration</li>
+          <li class="breadcrumb-item active">Profils &amp; Permissions</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header d-flex align-items-center justify-content-between py-2">
+          <h6 class="mb-0 fw-semibold">Profils</h6>
+          <button
+            class="btn btn-sm btn-primary rounded-circle"
+            style="width: 28px; height: 28px; padding: 0"
+            (click)="openNewProfileModal(profileModal)"
+            title="Nouveau profil"
+          >
+            <i class="las la-plus"></i>
+          </button>
+        </div>
+        <div class="card-body p-2">
+          <div class="mb-2">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Rechercher un profil..."
+              [(ngModel)]="searchProfile"
+            />
+          </div>
+          <div class="list-group list-group-flush">
+            @for (profile of filteredProfiles; track profile.id) {
+              <button
+                class="list-group-item list-group-item-action px-3 py-2 d-flex justify-content-between align-items-center"
+                [class.active]="selectedProfile?.id === profile.id"
+                (click)="selectProfile(profile)"
+              >
+                <div class="text-start overflow-hidden">
+                  <div class="fw-semibold small text-truncate">{{ profile.name }}</div>
+                  <small class="text-muted">{{ profile.description }}</small>
+                </div>
+                <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                  <button
+                    class="btn btn-sm btn-soft-primary"
+                    [class.btn-light]="selectedProfile?.id === profile.id"
+                    (click)="openEditProfileModal(editProfileModal, profile); $event.stopPropagation()"
+                    title="Modifier le profil"
+                  >
+                    <i class="las la-pen"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-soft-danger"
+                    [class.btn-light]="selectedProfile?.id === profile.id"
+                    (click)="confirmDelete(deleteModal, profile); $event.stopPropagation()"
+                    title="Supprimer"
+                  >
+                    <i class="las la-trash-alt"></i>
+                  </button>
+                </div>
+              </button>
+            }
+            @if (filteredProfiles.length === 0) {
+              <div class="text-center text-muted py-3 small">Aucun profil</div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="card h-100">
+        @if (!selectedProfile) {
+          <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 300px">
+            <div class="text-center text-muted">
+              <i class="las la-hand-point-left fs-1 d-block mb-2"></i>
+              <p class="mb-0">Sélectionnez un profil pour configurer ses permissions</p>
+            </div>
+          </div>
+        } @else if (loading) {
+          <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 300px">
+            <span class="spinner-border text-primary"></span>
+          </div>
+        } @else {
+          <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2 py-2">
+            <div>
+              <h6 class="mb-0 fw-semibold">
+                Permissions : <span class="text-primary">{{ selectedProfile.name }}</span>
+              </h6>
+              <small class="text-muted">{{ selectedProfile.description }}</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                (click)="openEditProfileModal(editProfileModal, selectedProfile)"
+                title="Modifier nom et description"
+              >
+                <i class="las la-pen me-1"></i> Modifier profil
+              </button>
+              <button
+                class="btn btn-primary btn-sm"
+                (click)="savePermissions()"
+                [disabled]="savingPermissions"
+              >
+                @if (savingPermissions) {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                }
+                Enregistrer
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body border-bottom py-2">
+            <div class="row g-2 align-items-center">
+              <div class="col-md-4">
+                <select
+                  class="form-select form-select-sm"
+                  [(ngModel)]="selectedFeature"
+                  (ngModelChange)="onFilterChange()"
+                >
+                  <option value="">Toutes les fonctionnalités</option>
+                  @for (feature of features; track feature.type) {
+                    <option [value]="feature.type">{{ feature.description }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-4">
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Rechercher une permission..."
+                  [(ngModel)]="searchPermission"
+                  (keyup.enter)="onFilterChange()"
+                />
+              </div>
+              <div class="col-auto">
+                <button class="btn btn-outline-secondary btn-sm" (click)="onFilterChange()">
+                  <i class="las la-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body overflow-auto" style="max-height: 500px">
+            @for (group of permissionGroups; track group.feature.type) {
+              <div class="mb-3">
+                <div class="d-flex align-items-center gap-2 mb-2 pb-1 border-bottom">
+                  <div class="form-check mb-0">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="'all-' + group.feature.type"
+                      [checked]="group.allSelected"
+                      (change)="toggleAll(group, $any($event.target).checked)"
+                    />
+                    <label class="form-check-label fw-semibold" [for]="'all-' + group.feature.type">
+                      {{ group.feature.type }}
+                    </label>
+                  </div>
+                  <small class="text-muted">{{ group.feature.type }}</small>
+                </div>
+                <div class="row g-2">
+                  @for (perm of group.permissions; track perm.type) {
+                    <div class="col-md-6 col-lg-4">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [id]="perm.type"
+                          [checked]="perm.selected"
+                          (change)="perm.selected = $any($event.target).checked; onPermissionToggle(perm.type!, perm.selected); updateGroupAll(group)"
+                        />
+                        <label class="form-check-label small" [for]="perm.type">
+                          {{ perm.description }}
+                          <code class="text-muted ms-1" style="font-size: 0.7em">{{ perm.type }}</code>
+                        </label>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            @if (permissionGroups.length === 0) {
+              <div class="text-center text-muted py-4">Aucune permission trouvée</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #profileModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Nouveau profil</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Nom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [(ngModel)]="newProfile.name" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description <span class="text-danger">*</span></label>
+        <textarea class="form-control" rows="2" [(ngModel)]="newProfile.description"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button
+      class="btn btn-primary"
+      (click)="saveNewProfile(modal)"
+      [disabled]="!newProfile.name.trim() || !newProfile.description.trim()"
+    >
+      Créer
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #editProfileModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Modifier le profil</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Nom <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" [(ngModel)]="editProfile.name" placeholder="Nom du profil" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Description <span class="text-danger">*</span></label>
+        <textarea class="form-control" rows="3" [(ngModel)]="editProfile.description" placeholder="Description du profil..."></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button
+      class="btn btn-primary"
+      (click)="saveEditProfile(modal)"
+      [disabled]="!editProfile.name.trim() || !editProfile.description.trim() || savingProfile"
+    >
+      @if (savingProfile) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+      }
+      Enregistrer
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header border-0">
+    <h5 class="modal-title text-danger">
+      <i class="las la-exclamation-triangle me-2"></i>Confirmation
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center">
+    <p>Supprimer le profil <strong>{{ profileToDelete?.name }}</strong> ?</p>
+    <small class="text-muted">Cette action est irréversible.</small>
+  </div>
+  <div class="modal-footer border-0">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button class="btn btn-danger" (click)="modal.close()">Supprimer</button>
+  </div>
+</ng-template>

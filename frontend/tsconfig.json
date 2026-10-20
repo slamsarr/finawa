@@ -1,0 +1,63 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "include": [
+    "src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "allowJs": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@core/*": [
+        "./src/app/core/*"
+      ],
+      "@common/*": [
+        "./src/app/core/common/*"
+      ],
+      "@layouts/*": [
+        "./src/app/core/layouts/*"
+      ],
+      "@openapi/*": [
+        "./src/app/core/openapi/*"
+      ],
+      "@pages/*": [
+        "./src/app/core/pages/*"
+      ],
+      "@stores/*": [
+        "./src/app/core/stores/*"
+      ],
+      "@utils/*": [
+        "./src/app/core/utils/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

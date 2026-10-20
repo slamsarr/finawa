@@ -1,0 +1,238 @@
+<div class="container-fluid">
+  <div class="row mb-3 align-items-center app-page-head">
+    <div class="col">
+      <h4 class="page-title mb-2">Alertes</h4>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/">Accueil</a></li>
+          <li class="breadcrumb-item">Paramètres</li>
+          <li class="breadcrumb-item active">Alertes</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" (click)="openModal(alertModal)">
+        <i class="las la-plus me-1"></i>Ajouter une alerte
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="row g-2 align-items-center">
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            placeholder="Rechercher par message..."
+            [(ngModel)]="searchMessage"
+            (keyup.enter)="onSearch()"
+          />
+        </div>
+        <div class="col-md-2">
+          @if (priorities$ | async; as priorities) {
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="priorityFilter"
+              (ngModelChange)="onSearch()"
+            >
+              <option [value]="0">Toutes priorités</option>
+              @for (p of priorities.payload; track p.id) {
+                <option [value]="p.id">{{ p.name }}</option>
+              }
+            </select>
+          }
+        </div>
+        <div class="col-md-2">
+          <select class="form-select form-select-sm" [(ngModel)]="readFilter" (ngModelChange)="onSearch()">
+            <option value="">Tous</option>
+            <option value="false">Non lues</option>
+            <option value="true">Lues</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-secondary btn-sm" (click)="onSearch()" title="Rechercher">
+            <i class="las la-search"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-secondary btn-sm" (click)="onReset()" title="Réinitialiser">
+            <i class="las la-sync"></i>
+          </button>
+        </div>
+        <div class="col-auto ms-auto">
+          <small class="text-muted">{{ totalElements }} alerte(s)</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-centered mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>MESSAGE</th>
+              <th>PRIORITÉ</th>
+              <th>UTILISATEUR</th>
+              <th>DATE</th>
+              <th class="text-center">LU</th>
+              <th class="text-center">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (alerts$ | async; as alerts) {
+              @for (alert of alerts.payload; track alert.id) {
+                <tr [class.table-light]="!alert.read">
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-warning-subtle rounded p-2">
+                        <i class="las la-bell text-warning"></i>
+                      </div>
+                      <span class="fw-medium">{{ alert.message }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary-subtle text-secondary">
+                      {{ alert.priority?.name || '—' }}
+                    </span>
+                  </td>
+                  <td class="text-muted small">{{ alert.user || '—' }}</td>
+                  <td class="text-muted small text-nowrap">
+                    {{ alert.date | date: 'dd/MM/yyyy HH:mm' }}
+                  </td>
+                  <td class="text-center">
+                    @if (alert.read) {
+                      <span class="badge bg-success-subtle text-success">Lu</span>
+                    } @else {
+                      <span class="badge bg-warning-subtle text-warning">Non lu</span>
+                    }
+                  </td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-soft-primary me-1"
+                      (click)="openModal(alertModal, alert)"
+                      title="Modifier"
+                    >
+                      <i class="las la-pen"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-soft-danger"
+                      (click)="confirmDelete(deleteModal, alert)"
+                      title="Supprimer"
+                    >
+                      <i class="las la-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+              @if (alerts.payload?.length === 0) {
+                <tr>
+                  <td colspan="6" class="text-center py-5 text-muted">
+                    <i class="las la-bell-slash fs-1 d-block mb-2"></i>
+                    Aucune alerte trouvée
+                  </td>
+                </tr>
+              }
+            } @else {
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <span class="spinner-border text-primary"></span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalElements > size) {
+      <div class="card-footer d-flex justify-content-end">
+        <ngb-pagination
+          [collectionSize]="totalElements"
+          [(page)]="page"
+          [pageSize]="size"
+          [maxSize]="5"
+          (pageChange)="onPageChange($event)"
+        />
+      </div>
+    }
+  </div>
+</div>
+
+<ng-template #alertModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ selectedAlertForm?.id ? 'Modifier l\'alerte' : 'Ajouter une alerte' }}
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedAlertForm) {
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Message <span class="text-danger">*</span></label>
+          <textarea
+            class="form-control"
+            rows="3"
+            [(ngModel)]="selectedAlertForm.message"
+            placeholder="Contenu de l'alerte..."
+          ></textarea>
+        </div>
+        <div class="col-md-6">
+          @if (priorities$ | async; as priorities) {
+            <label class="form-label">Priorité <span class="text-danger">*</span></label>
+            <select class="form-select" [(ngModel)]="selectedAlertForm.priorityId">
+              <option [ngValue]="undefined">-- Sélectionner --</option>
+              @for (p of priorities.payload; track p.id) {
+                <option [ngValue]="p.id">{{ p.name }}</option>
+              }
+            </select>
+          }
+        </div>
+        @if (!selectedAlertForm.id) {
+          <div class="col-md-6">
+            @if (users$ | async; as users) {
+              <label class="form-label">Utilisateur <span class="text-danger">*</span></label>
+              <select class="form-select" [(ngModel)]="selectedAlertForm.userLogin">
+                <option [ngValue]="undefined">-- Sélectionner --</option>
+                @for (user of users.payload; track user.id) {
+                  <option [ngValue]="user.login">{{ user.login }}</option>
+                }
+              </select>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button
+      class="btn btn-primary"
+      (click)="save(modal)"
+      [disabled]="saving || !selectedAlertForm?.message?.trim() || !selectedAlertForm?.priorityId || (!selectedAlertForm?.id && !selectedAlertForm?.userLogin)"
+    >
+      @if (saving) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+      }
+      Enregistrer
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header border-0">
+    <h5 class="modal-title text-danger">
+      <i class="las la-exclamation-triangle me-2"></i>Confirmation
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center">
+    <p>Supprimer cette alerte ?</p>
+    <small class="text-muted">{{ selectedAlertToDelete?.message }}</small>
+  </div>
+  <div class="modal-footer border-0">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+    <button class="btn btn-danger" (click)="modal.close()">Supprimer</button>
+  </div>
+</ng-template>

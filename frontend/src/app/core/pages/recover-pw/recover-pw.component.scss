@@ -1,0 +1,464 @@
+// ══════════════════════════════════════════════════════════════════════
+// FINAWA AUTH DESIGN SYSTEM - RECOVER PASSWORD
+// ══════════════════════════════════════════════════════════════════════
+
+$crimson-primary: #dd241d;
+$crimson-hover: #b91c1c;
+
+$navy-950: #0a192f;
+$navy-900: #0f2b48;
+$navy-850: #17385c;
+$navy-800: #204975;
+$navy-700: #3b608c;
+
+$slate-50: #f8fafc;
+$slate-100: #f1f5f9;
+$slate-200: #e2e8f0;
+$slate-300: #cbd5e1;
+$slate-400: #94a3b8;
+$slate-500: #64748b;
+$slate-600: #475569;
+$slate-700: #334155;
+
+:host {
+  display: block;
+  font-family: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  background-color: $slate-100;
+  color: $navy-850;
+}
+
+.text-crimson { color: $crimson-primary !important; }
+.text-xs { font-size: 0.8rem; }
+.text-sm { font-size: 0.88rem; }
+
+.auth-home-link {
+  color: $navy-700;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    color: $crimson-primary;
+  }
+}
+
+// ── Wrapper ──
+.recover-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 10%, rgba(221, 36, 29, 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 45% at 90% 85%, rgba(99, 132, 117, 0.12), transparent 50%),
+    linear-gradient(180deg, #fbfcfe 0%, $slate-100 100%);
+}
+
+.auth-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(42px);
+  opacity: 0.5;
+  animation: drift 14s ease-in-out infinite;
+}
+
+.orb-a {
+  width: 300px;
+  height: 300px;
+  top: -70px;
+  left: -50px;
+  background: rgba(221, 36, 29, 0.22);
+}
+
+.orb-b {
+  width: 340px;
+  height: 340px;
+  right: -90px;
+  bottom: -110px;
+  background: rgba(99, 132, 117, 0.2);
+  animation-delay: -5s;
+}
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image:
+    linear-gradient(rgba(11, 19, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 19, 41, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -14px) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none !important; }
+}
+
+// ── Floating Theme Switcher ──
+.theme-floating-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid $slate-200;
+  background: rgba(255, 255, 255, 0.92);
+  color: $navy-800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(11, 19, 41, 0.06);
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: $crimson-primary;
+    color: $crimson-primary;
+    transform: translateY(-1px);
+  }
+}
+
+// ── Container & Card ──
+.recover-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  animation: rise-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recover-card {
+  background: #ffffff;
+  border: 1px solid $slate-200;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(11, 19, 41, 0.1);
+  overflow: hidden;
+}
+
+.recover-card-header {
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 10%, rgba(221, 36, 29, 0.22), transparent 55%),
+    linear-gradient(160deg, #0a192f 0%, #0f2b48 55%, #17385c 100%);
+  padding: 2.5rem 2rem 2rem;
+  color: #ffffff;
+  position: relative;
+
+  .recover-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .recover-wordmark {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+
+    span { color: $crimson-primary; }
+  }
+
+  .recover-eyebrow {
+    display: block;
+    color: #fca5a5;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.65rem;
+  }
+
+  .recover-title {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+  }
+
+  .recover-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: $slate-300;
+  }
+}
+
+.recover-card-body {
+  padding: 2.25rem 2rem;
+}
+
+// ── Form Controls ──
+.form-label-custom {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $navy-700;
+  margin-bottom: 0.35rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    color: $slate-400;
+    font-size: 0.95rem;
+    pointer-events: none;
+    transition: color 0.2s ease;
+  }
+
+  .form-control-custom {
+    width: 100%;
+    padding: 0.78rem 1rem 0.78rem 2.6rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: $navy-900;
+    background: $slate-50;
+    border: 1px solid $slate-200;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $slate-400;
+      font-weight: 400;
+    }
+
+    &:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: $crimson-primary;
+      box-shadow: 0 0 0 3px rgba(221, 36, 29, 0.12);
+    }
+
+    &.is-invalid {
+      border-color: #ef4444;
+      background: #fff5f5;
+    }
+  }
+
+  .password-toggle-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    color: $slate-400;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $navy-800;
+    }
+  }
+}
+
+.field-error-msg {
+  font-size: 0.76rem;
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+// ── Buttons ──
+.btn-recover-primary {
+  background: $crimson-primary;
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(221, 36, 29, 0.25);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover:not(:disabled) {
+    background: $crimson-hover;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 28px rgba(221, 36, 29, 0.32);
+    color: #ffffff;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.btn-recover-outline {
+  background: transparent;
+  border: 1px solid $slate-300;
+  color: $navy-800;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $navy-700;
+    background: $slate-100;
+  }
+}
+
+// ── Feedback Box ──
+.status-feedback-box {
+  .feedback-icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+
+    &.success {
+      background: rgba(196, 30, 58, 0.1);
+      border: 1px solid rgba(196, 30, 58, 0.25);
+      color: #c41e3a;
+    }
+  }
+
+  .feedback-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  .feedback-desc {
+    line-height: 1.6;
+  }
+}
+
+// ── Alert Error ──
+.auth-alert-error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// DARK THEME OVERRIDES ([data-bs-theme='dark'])
+// ══════════════════════════════════════════════════════════════════════
+:host-context([data-bs-theme='dark']) {
+  background-color: #081426;
+  color: #f1f5f9;
+
+  .recover-page-wrapper {
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 10%, rgba(221, 36, 29, 0.16), transparent 55%),
+      radial-gradient(ellipse 60% 45% at 90% 85%, rgba(99, 132, 117, 0.14), transparent 50%),
+      linear-gradient(180deg, #081426 0%, #0d1f36 100%);
+  }
+
+  .mesh {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  }
+
+  .theme-floating-btn {
+    background: rgba(13, 31, 54, 0.9);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #f8fafc;
+    &:hover { border-color: $crimson-primary; color: $crimson-primary; }
+  }
+
+  .recover-card {
+    background: #0d1f36;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 60px rgba(5, 15, 30, 0.6);
+  }
+
+  .recover-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .recover-card-footer {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .form-label-custom { color: #e2e8f0; }
+
+  .input-wrapper {
+    .input-icon { color: #94a3b8; }
+    .form-control-custom {
+      background: #081527;
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      &::placeholder { color: #94a3b8; }
+      &:focus {
+        background: #0b1c33;
+        border-color: $crimson-primary;
+        color: #ffffff;
+      }
+      &.is-invalid {
+        background: rgba(220, 38, 38, 0.15);
+        border-color: #dc2626;
+      }
+    }
+    .password-toggle-btn {
+      color: #94a3b8;
+      &:hover { color: #ffffff; }
+    }
+  }
+
+  .btn-recover-outline {
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #f8fafc;
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  .auth-alert-error {
+    background: rgba(220, 38, 38, 0.18);
+    border-color: rgba(220, 38, 38, 0.4);
+    .text-danger-emphasis { color: #fca5a5 !important; }
+  }
+
+  .status-feedback-box .feedback-desc {
+    color: #cbd5e1 !important;
+  }
+
+  .auth-home-link {
+    color: #fca5a5;
+    &:hover { color: #ffffff; }
+  }
+}

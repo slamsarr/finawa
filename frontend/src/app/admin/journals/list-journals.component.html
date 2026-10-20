@@ -1,0 +1,200 @@
+<div class="container-fluid">
+  <div class="row mb-3 align-items-center app-page-head">
+    <div class="col">
+      <h4 class="page-title mb-2">Journal</h4>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a routerLink="/">Accueil</a></li>
+          <li class="breadcrumb-item">Paramètres</li>
+          <li class="breadcrumb-item active">Journal</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="row g-2 align-items-center">
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            placeholder="Utilisateur (login)..."
+            [(ngModel)]="filterLogin"
+            (keyup.enter)="onFilter()"
+          />
+        </div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            placeholder="Type d'action..."
+            [(ngModel)]="filterAction"
+            (keyup.enter)="onFilter()"
+          />
+        </div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            placeholder="Type de methode..."
+            [(ngModel)]="filterMethod"
+            (keyup.enter)="onFilter()"
+          />
+        </div>
+        <div class="col-md-2">
+          <input
+            type="datetime-local"
+            class="form-control form-control-sm"
+            [(ngModel)]="filterDate"
+            (change)="onFilter()"
+          />
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-secondary btn-sm" (click)="onFilter()" title="Filtrer">
+            <i class="las la-search"></i>
+          </button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-secondary btn-sm" (click)="onReset()" title="Réinitialiser">
+            <i class="las la-sync"></i>
+          </button>
+        </div>
+        <div class="col-auto ms-auto">
+          <small class="text-muted">{{ totalElements }} entrée(s)</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-centered mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>DATE</th>
+              <th>UTILISATEUR</th>
+              <th>ACTION</th>
+              <th>MÉTHODE</th>
+              <th>URL</th>
+              <th class="text-center">DÉTAIL</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (journals$ | async; as journals) {
+              @for (entry of journals.payload; track entry.id) {
+                <tr>
+                  <td class="text-muted small text-nowrap">
+                    {{ entry.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }}
+                  </td>
+                  <td>{{ entry.login || entry.user || '—' }}</td>
+                  <td>
+                    <code class="text-primary small">{{ entry.actionType || '—' }}</code>
+                  </td>
+                  <td>
+                    <span class="badge bg-{{ methodClass(entry.method) }}-subtle text-{{ methodClass(entry.method) }}">
+                      {{ entry.method || '—' }}
+                    </span>
+                  </td>
+                  <td class="text-muted small text-truncate" style="max-width: 200px">
+                    {{ entry.path || entry.url || '—' }}
+                  </td>
+                  <td class="text-center">
+                    <button
+                      class="btn btn-sm btn-soft-info"
+                      (click)="viewDetail(detailModal, entry)"
+                      title="Voir le détail"
+                    >
+                      <i class="las la-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+              @if (journals.payload?.length === 0) {
+                <tr>
+                  <td colspan="6" class="text-center py-5 text-muted">
+                    <i class="las la-clipboard-list fs-1 d-block mb-2"></i>
+                    Aucune entrée trouvée
+                  </td>
+                </tr>
+              }
+            } @else {
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <span class="spinner-border text-primary"></span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    @if (totalElements > size) {
+      <div class="card-footer d-flex justify-content-end">
+        <ngb-pagination
+          [collectionSize]="totalElements"
+          [(page)]="page"
+          [pageSize]="size"
+          [maxSize]="5"
+          (pageChange)="onPageChange($event)"
+        />
+      </div>
+    }
+  </div>
+</div>
+
+<ng-template #detailModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="las la-clipboard-list me-2"></i>Détail du journal
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (selectedJournal) {
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Date</label>
+          <p class="mb-0">{{ selectedJournal.creationDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Utilisateur</label>
+          <p class="mb-0">{{ selectedJournal.login || selectedJournal.user || '—' }}</p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Action</label>
+          <p class="mb-0"><code>{{ selectedJournal.actionType || '—' }}</code></p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Méthode</label>
+          <p class="mb-0">{{ selectedJournal.method || '—' }}</p>
+        </div>
+        <div class="col-12">
+          <label class="form-label text-muted small">URL</label>
+          <p class="mb-0 text-break">{{ selectedJournal.path || selectedJournal.url || '—' }}</p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Adresse IP</label>
+          <p class="mb-0">{{ selectedJournal.ipAddress || '—' }}</p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label text-muted small">Page référente</label>
+          <p class="mb-0">{{ selectedJournal.refererPage || '—' }}</p>
+        </div>
+        <div class="col-12">
+          <label class="form-label text-muted small">User Agent</label>
+          <p class="mb-0 small text-muted">{{ selectedJournal.userAgent || '—' }}</p>
+        </div>
+        @if (selectedJournal.data) {
+          <div class="col-12">
+            <label class="form-label text-muted small">Données</label>
+            <pre class="bg-light p-2 rounded small mb-0" style="max-height: 200px; overflow: auto">{{ selectedJournal.data }}</pre>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Fermer</button>
+  </div>
+</ng-template>
